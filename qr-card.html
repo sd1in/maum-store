@@ -175,13 +175,15 @@ function renderCard(d) {
   });
 
   document.getElementById('qrcode').innerHTML = '';
-  new QRCode(document.getElementById('qrcode'), {
-    text: qrData,
-    width: 200, height: 200,
-    colorDark: '#0F1E4A',
-    colorLight: '#FFFFFF',
-    correctLevel: QRCode.CorrectLevel.M
-  });
+  setTimeout(function() {
+    new QRCode(document.getElementById('qrcode'), {
+      text: qrData,
+      width: 200, height: 200,
+      colorDark: '#0F1E4A',
+      colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  }, 100);
 }
 
 document.getElementById('idInput') && document.getElementById('idInput').addEventListener('keypress', function(e) {

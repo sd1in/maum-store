@@ -454,6 +454,25 @@
       '<div class="ms-chip">🏠 '+payload.가구원수+' 가구</div>'+
       '<div class="ms-chip">📍 '+payload.주소동+'</div>'+
       '<div class="ms-chip">📊 '+payload.대상군+'</div>';
+
+    // QR카드 바로가기 버튼
+    var qrUrl = 'https://sd1in.github.io/maum-store/qr-card.html'
+      +'?id='+encodeURIComponent(regId)
+      +'&name='+encodeURIComponent(payload.성명)
+      +'&age='+encodeURIComponent(payload.연령대)
+      +'&hh='+encodeURIComponent(payload.가구원수)
+      +'&addr='+encodeURIComponent(payload.주소동)
+      +'&group='+encodeURIComponent(payload.대상군);
+    var existing = document.getElementById('msQrBtn');
+    if(existing) existing.remove();
+    var qrBtn = document.createElement('a');
+    qrBtn.id = 'msQrBtn';
+    qrBtn.href = qrUrl;
+    qrBtn.target = '_blank';
+    qrBtn.style.cssText = 'display:block;margin:18px 20px 0;padding:15px;background:#2B5CE6;color:white;text-align:center;border-radius:14px;font-weight:700;font-size:15px;text-decoration:none;letter-spacing:0.5px;';
+    qrBtn.textContent = '📱 내 QR카드 보기';
+    $('msComplete').appendChild(qrBtn);
+
     $('maumStore').scrollIntoView({behavior:'smooth',block:'start'});
   }
 
