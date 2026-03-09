@@ -164,15 +164,8 @@ function renderCard(d) {
   gEl.className = 'group-badge g-' + g;
   gEl.textContent = '📊 ' + g;
 
-  // QR코드 생성 - JSON 데이터 포함
-  var qrData = JSON.stringify({
-    등록번호: d.등록번호,
-    성명: d.성명,
-    연령대: d.연령대,
-    가구원수: d.가구원수,
-    주소동: d.주소동,
-    대상군: d.대상군
-  });
+  // QR코드 생성 - 등록번호 + 이름만 담기
+  var qrData = d.등록번호 + '|' + d.성명;
 
   document.getElementById('qrcode').innerHTML = '';
   setTimeout(function() {

@@ -235,8 +235,11 @@ function handleQR(raw) {
     var d = JSON.parse(raw);
     showResult(d);
   } catch(e) {
-    if (/^SD\d{4}-\d{4}$/.test(raw.trim())) {
-      showResult({ 등록번호: raw.trim(), 성명: '등록번호 조회', 연령대: '—', 가구원수: '—', 주소동: '—', 대상군: '확인필요' });
+    var parts = raw.trim().split('|');
+    var id = parts[0].trim();
+    var name = parts[1] ? parts[1].trim() : '이용자';
+    if (/^SD\d{4}-\d{4}$/.test(id)) {
+      showResult({ 등록번호: id, 성명: name, 연령대: '—', 가구원수: '—', 주소동: '—', 대상군: '확인필요' });
     } else {
       showErr('올바른 이용자 QR코드가 아닙니다.');
     }
