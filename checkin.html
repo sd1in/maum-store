@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>서울마음편의점 성동 — 방문 체크인</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+<style>
+:root {
+  --primary: #2B5CE6; --dark: #0F1E4A;
+  --green: #16A34A; --bg: #F0F4FF;
+  --border: #DDE3F5; --card: #fff;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); min-height: 100vh; }
+
+.header { background: var(--dark); color: white; padding: 20px 24px 18px; display: flex; align-items: center; gap: 14px; }
+.header-icon { width: 42px; height: 42px; border-radius: 12px; background: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+.header-title { font-size: 17px; font-weight: 900; }
+.header-sub { font-size: 12px; opacity: .6; margin-top: 2px; }
+
+.main { padding: 20px 16px 100px; max-width: 500px; margin: 0 auto; }
+
+/* 통계 */
+.stat-row { display: flex; gap: 8px; margin-bottom: 18px; }
+.stat-box { flex: 1; background: var(--card); border-radius: 14px; padding: 14px 10px; text-align: center; border: 1px solid var(--border); }
+.stat-box .num { font-size: 26px; font-weight: 900; color: var(--primary); line-height: 1; }
+.stat-box .lbl { font-size: 10px; color: #9CA3AF; margin-top: 4px; }
+
+/* 스캐너 */
+.scanner-wrap { background: #0F1E4A; border-radius: 20px; overflow: hidden; margin-bottom: 14px; }
+.scanner-inner { position: relative; width: 100%; aspect-ratio: 1; }
+#scanVideo { width: 100%; height: 100%; object-fit: cover; display: block; }
+#scanCanvas { display: none; }
+
+.camera-off { aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; color:white; gap:12px; }
+.camera-off .ic { font-size: 44px; opacity: .4; }
+.camera-off p { font-size: 13px; opacity: .6; }
+.btn-cam { padding: 12px 24px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer; }
+
+.scan-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; display:none; }
+.scan-frame { width: 58%; aspect-ratio: 1; border: 3px solid rgba(255,255,255,.85); border-radius: 16px; box-shadow: 0 0 0 9999px rgba(0,0,0,.5); position: relative; overflow: hidden; }
+.scan-line { position: absolute; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, #2B5CE6, transparent); animation: scan 1.8s ease-in-out infinite; }
+@keyframes scan { 0%,100%{top:0} 50%{top:calc(100% - 3px)} }
+
+.scan-status { text-align: center; padding: 13px; color: rgba(255,255,255,.7); font-size: 13px; }
+
+/* 수동 입력 */
+.manual-row { display: flex; gap: 8px; margin-bottom: 14px; }
+.manual-input { flex:1; padding: 13px 15px; border: 2px solid var(--border); border-radius: 12px; font-size: 14px; font-family: inherit; color: var(--dark); outline: none; transition: border-color .2s; background: white; }
+.manual-input:focus { border-color: var(--primary); }
+.manual-btn { padding: 13px 18px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer; white-space: nowrap; }
+
+/* 결과 카드 */
+.result-card { border-radius: 20px; padding: 22px 20px; margin-bottom: 14px; display: none; animation: pop .35s cubic-bezier(.34,1.56,.64,1); }
+@keyframes pop { from{opacity:0;transform:scale(.93)} to{opacity:1;transform:none} }
+.result-card.ok { background:#F0FDF4; border: 2px solid #86EFAC; display:block; }
+.result-card.warn { background:#FFFBEB; border: 2px solid #FCD34D; display:block; }
+.result-card.err { background:#FEF2F2; border: 2px solid #FCA5A5; display:block; }
+
+.res-top { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+.res-icon { width: 54px; height: 54px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; }
+.ok .res-icon { background: #DCFCE7; }
+.warn .res-icon { background: #FEF9C3; }
+.err .res-icon { background: #FEE2E2; }
+.res-name { font-size: 22px; font-weight: 900; color: var(--dark); }
+.res-id-text { font-size: 12px; color: #6B7280; margin-top: 3px; }
+
+.res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.res-cell { background: white; border-radius: 12px; padding: 12px 14px; border: 1px solid var(--border); }
+.res-cell .l { font-size: 10px; color: #9CA3AF; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+.res-cell .v { font-size: 14px; font-weight: 700; color: var(--dark); }
+
+.res-group { padding: 11px 14px; border-radius: 12px; font-size: 13px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.g-예방군 { background:#F0FDF4; color:#16A34A; border:1px solid #86EFAC; }
+.g-관계지원군 { background:#EFF6FF; color:#2563EB; border:1px solid #93C5FD; }
+.g-일상지원군 { background:#FFFBEB; color:#D97706; border:1px solid #FCD34D; }
+.g-일상위험고립군 { background:#FFF7ED; color:#EA580C; border:1px solid #FDBA74; }
+.g-집중관리군 { background:#FEF2F2; color:#DC2626; border:1px solid #FCA5A5; }
+
+.warn-box { background: #FEF9C3; border-radius: 10px; padding: 11px 13px; font-size: 13px; color: #92400E; line-height: 1.6; margin-bottom: 12px; }
+.err-text { font-size: 13px; color: #B91C1C; line-height: 1.6; margin-bottom: 12px; }
+
+.food-toggle { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: white; border-radius: 12px; border: 2px solid var(--border); margin-bottom: 12px; cursor: pointer; }
+.food-toggle.on { border-color: var(--primary); background: #EEF2FF; }
+.toggle-dot { width: 40px; height: 24px; border-radius: 12px; background: #D1D5DB; position: relative; transition: background .2s; flex-shrink:0; }
+.food-toggle.on .toggle-dot { background: var(--primary); }
+.toggle-dot::after { content:''; position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%; background:white; transition: transform .2s; }
+.food-toggle.on .toggle-dot::after { transform: translateX(16px); }
+.food-lbl { font-size: 13px; font-weight: 600; color: var(--dark); }
+
+.btn-confirm { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 14px; font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all .2s; box-shadow: 0 4px 14px rgba(43,92,230,.3); margin-bottom: 8px; }
+.btn-confirm:active { transform: scale(.97); }
+.btn-confirm:disabled { background: #9CA3AF; box-shadow: none; cursor: not-allowed; }
+.btn-rescan { width: 100%; padding: 14px; background: white; color: var(--dark); border: 2px solid var(--border); border-radius: 14px; font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer; }
+
+/* 목록 */
+.sec-title { font-size: 12px; font-weight: 700; color: #9CA3AF; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+.checkin-list { display: flex; flex-direction: column; gap: 8px; }
+.ci-item { background: white; border-radius: 14px; padding: 13px 16px; border: 1px solid var(--border); display: flex; align-items: center; gap: 12px; animation: slideIn .3s ease; }
+@keyframes slideIn { from{opacity:0;transform:translateX(-8px)} to{opacity:1;transform:none} }
+.ci-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--green); flex-shrink:0; }
+.ci-dot.food { background: #F59E0B; }
+.ci-info { flex: 1; }
+.ci-name { font-size: 14px; font-weight: 700; color: var(--dark); }
+.ci-meta { font-size: 11px; color: #9CA3AF; margin-top: 2px; }
+.ci-time { font-size: 12px; font-weight: 700; color: #6B7280; }
+.ci-food-badge { font-size: 10px; background: #FEF9C3; color: #92400E; border-radius: 6px; padding: 2px 6px; font-weight: 700; }
+.empty { text-align:center; padding:28px; color:#9CA3AF; font-size:13px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-icon">📡</div>
+  <div>
+    <div class="header-title">방문 체크인</div>
+    <div class="header-sub">서울마음편의점 성동 · 담당자용</div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="stat-row">
+    <div class="stat-box"><div class="num" id="stTotal">0</div><div class="lbl">오늘 방문</div></div>
+    <div class="stat-box"><div class="num" id="stFood">0</div><div class="lbl">식품 제공</div></div>
+    <div class="stat-box"><div class="num" id="stRepeat">0</div><div class="lbl">중복 방문</div></div>
+  </div>
+
+  <!-- 스캐너 -->
+  <div class="scanner-wrap">
+    <div class="scanner-inner">
+      <div class="camera-off" id="camOff">
+        <div class="ic">📷</div>
+        <p>카메라로 이용자 QR코드를 스캔하세요</p>
+        <button class="btn-cam" onclick="startCam()">카메라 시작</button>
+      </div>
+      <video id="scanVideo" autoplay playsinline style="display:none"></video>
+      <canvas id="scanCanvas"></canvas>
+      <div class="scan-overlay" id="scanOverlay">
+        <div class="scan-frame"><div class="scan-line"></div></div>
+      </div>
+    </div>
+    <div class="scan-status" id="scanStatus">QR코드를 프레임 안에 위치시켜 주세요</div>
+  </div>
+
+  <!-- 수동 입력 -->
+  <div class="manual-row">
+    <input type="text" class="manual-input" id="manualId" placeholder="등록번호 직접 입력  예) SD2026-1234">
+    <button class="manual-btn" onclick="doManual()">조회</button>
+  </div>
+
+  <!-- 결과 -->
+  <div class="result-card" id="resultCard">
+    <div class="res-top">
+      <div class="res-icon" id="resIcon">✅</div>
+      <div>
+        <div class="res-name" id="resName">—</div>
+        <div class="res-id-text" id="resIdText">—</div>
+      </div>
+    </div>
+    <div class="res-grid">
+      <div class="res-cell"><div class="l">연령대</div><div class="v" id="resAge">—</div></div>
+      <div class="res-cell"><div class="l">가구원수</div><div class="v" id="resHh">—</div></div>
+      <div class="res-cell"><div class="l">주소(동)</div><div class="v" id="resAddr">—</div></div>
+      <div class="res-cell"><div class="l">오늘 방문</div><div class="v" id="resToday">—</div></div>
+    </div>
+    <div class="res-group" id="resGroup"></div>
+    <div class="warn-box" id="warnBox" style="display:none"></div>
+    <div class="err-text" id="errText"></div>
+
+    <div class="food-toggle on" id="foodToggle" onclick="toggleFood()">
+      <div class="toggle-dot"></div>
+      <div class="food-lbl">🍜 오늘 식품 제공</div>
+    </div>
+
+    <button class="btn-confirm" id="btnConfirm" onclick="doCheckin()">✅ 체크인 완료</button>
+    <button class="btn-rescan" onclick="doRescan()">🔄 다시 스캔</button>
+  </div>
+
+  <!-- 오늘 목록 -->
+  <div class="sec-title" style="margin-top:8px">오늘 방문 기록</div>
+  <div class="checkin-list" id="ciList">
+    <div class="empty">아직 체크인 기록이 없습니다</div>
+  </div>
+
+</div>
+
+<script>
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx00VJbLT4g5uaQY0NJ234TU6XncbBtad4cpuXCvfYq04Vqy8yHpl_7YvdrEAA1enYTfA/exec';
+
+var scanning = false;
+var stream = null;
+var timer = null;
+var cur = null;
+var foodOn = true;
+var records = [];
+
+function startCam() {
+  navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment', width:{ ideal:1280 }, height:{ ideal:1280 } } })
+    .then(function(s) {
+      stream = s;
+      var v = document.getElementById('scanVideo');
+      v.srcObject = s;
+      v.style.display = 'block';
+      document.getElementById('camOff').style.display = 'none';
+      document.getElementById('scanOverlay').style.display = 'flex';
+      scanning = true;
+      timer = setInterval(tick, 350);
+    })
+    .catch(function() { alert('카메라 권한을 허용해 주세요.'); });
+}
+
+function tick() {
+  if (!scanning) return;
+  var v = document.getElementById('scanVideo');
+  if (v.readyState < 2) return;
+  var c = document.getElementById('scanCanvas');
+  c.width = v.videoWidth; c.height = v.videoHeight;
+  var ctx = c.getContext('2d');
+  ctx.drawImage(v, 0, 0);
+  var img = ctx.getImageData(0, 0, c.width, c.height);
+  var code = jsQR(img.data, img.width, img.height, { inversionAttempts: 'dontInvert' });
+  if (code) {
+    scanning = false;
+    clearInterval(timer);
+    document.getElementById('scanStatus').textContent = '✅ QR 인식 완료!';
+    handleQR(code.data);
+  }
+}
+
+function handleQR(raw) {
+  try {
+    var d = JSON.parse(raw);
+    showResult(d);
+  } catch(e) {
+    if (/^SD\d{4}-\d{4}$/.test(raw.trim())) {
+      showResult({ 등록번호: raw.trim(), 성명: '등록번호 조회', 연령대: '—', 가구원수: '—', 주소동: '—', 대상군: '확인필요' });
+    } else {
+      showErr('올바른 이용자 QR코드가 아닙니다.');
+    }
+  }
+}
+
+function doManual() {
+  var v = document.getElementById('manualId').value.trim();
+  if (!v) return;
+  showResult({ 등록번호: v, 성명: '직접입력', 연령대: '—', 가구원수: '—', 주소동: '—', 대상군: '확인필요' });
+  document.getElementById('manualId').value = '';
+}
+
+function showResult(d) {
+  cur = d;
+  var card = document.getElementById('resultCard');
+  document.getElementById('resName').textContent = d.성명 || '—';
+  document.getElementById('resIdText').textContent = d.등록번호 || '—';
+  document.getElementById('resAge').textContent = d.연령대 || '—';
+  document.getElementById('resHh').textContent = d.가구원수 || '—';
+  document.getElementById('resAddr').textContent = d.주소동 || '—';
+
+  var todayCount = records.filter(function(r){ return r.등록번호 === d.등록번호; }).length;
+  document.getElementById('resToday').textContent = todayCount + '회';
+
+  var g = d.대상군 || '확인필요';
+  var gEl = document.getElementById('resGroup');
+  gEl.className = 'res-group g-' + g;
+  gEl.innerHTML = '📊 대상군: <strong>' + g + '</strong>';
+
+  document.getElementById('errText').textContent = '';
+  var wb = document.getElementById('warnBox');
+
+  if (todayCount > 0) {
+    wb.style.display = 'block';
+    wb.textContent = '⚠️ 오늘 이미 ' + todayCount + '회 방문 기록이 있습니다.';
+    card.className = 'result-card warn';
+    document.getElementById('resIcon').textContent = '⚠️';
+  } else {
+    wb.style.display = 'none';
+    card.className = 'result-card ok';
+    document.getElementById('resIcon').textContent = '✅';
+  }
+
+  document.getElementById('btnConfirm').disabled = false;
+  document.getElementById('btnConfirm').textContent = '✅ 체크인 완료';
+  foodOn = true;
+  document.getElementById('foodToggle').className = 'food-toggle on';
+  card.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function showErr(msg) {
+  cur = null;
+  var card = document.getElementById('resultCard');
+  card.className = 'result-card err';
+  document.getElementById('resIcon').textContent = '❌';
+  document.getElementById('resName').textContent = '인식 실패';
+  document.getElementById('resIdText').textContent = '';
+  document.getElementById('resAge').textContent = '—';
+  document.getElementById('resHh').textContent = '—';
+  document.getElementById('resAddr').textContent = '—';
+  document.getElementById('resToday').textContent = '—';
+  document.getElementById('resGroup').className = 'res-group';
+  document.getElementById('resGroup').textContent = '';
+  document.getElementById('warnBox').style.display = 'none';
+  document.getElementById('errText').textContent = msg;
+  document.getElementById('btnConfirm').disabled = true;
+}
+
+function toggleFood() {
+  foodOn = !foodOn;
+  document.getElementById('foodToggle').className = 'food-toggle ' + (foodOn ? 'on' : '');
+}
+
+function doCheckin() {
+  if (!cur) return;
+  var btn = document.getElementById('btnConfirm');
+  btn.disabled = true; btn.textContent = '저장 중…';
+
+  var now = new Date();
+  var timeStr = now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+  var dateStr = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
+
+  var rec = {
+    등록번호: cur.등록번호,
+    성명: cur.성명,
+    방문일: dateStr,
+    방문시간: timeStr,
+    연령대: cur.연령대,
+    대상군: cur.대상군,
+    식품제공: foodOn ? '제공' : '미제공'
+  };
+
+  fetch(SCRIPT_URL, {
+    method: 'POST', mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(rec)
+  }).finally(function() {
+    rec._time = timeStr;
+    records.push(rec);
+    updateStats();
+    addToList(rec);
+    doRescan();
+  });
+}
+
+function updateStats() {
+  document.getElementById('stTotal').textContent = records.length;
+  document.getElementById('stFood').textContent = records.filter(function(r){ return r.식품제공==='제공'; }).length;
+  var seen = {}, dup = 0;
+  records.forEach(function(r){ if(seen[r.등록번호]) dup++; seen[r.등록번호]=true; });
+  document.getElementById('stRepeat').textContent = dup;
+}
+
+function addToList(rec) {
+  var list = document.getElementById('ciList');
+  var empty = list.querySelector('.empty');
+  if (empty) empty.remove();
+  var el = document.createElement('div');
+  el.className = 'ci-item';
+  el.innerHTML =
+    '<div class="ci-dot' + (rec.식품제공==='제공' ? ' food' : '') + '"></div>' +
+    '<div class="ci-info">' +
+      '<div class="ci-name">' + rec.성명 + (rec.식품제공==='제공'?' <span class="ci-food-badge">🍜식품</span>':'') + '</div>' +
+      '<div class="ci-meta">' + rec.등록번호 + ' · ' + (rec.대상군||'') + '</div>' +
+    '</div>' +
+    '<div class="ci-time">' + rec._time + '</div>';
+  list.insertBefore(el, list.firstChild);
+}
+
+function doRescan() {
+  cur = null;
+  document.getElementById('resultCard').style.display = 'none';
+  document.getElementById('resultCard').className = 'result-card';
+  if (stream) {
+    document.getElementById('scanStatus').textContent = 'QR코드를 프레임 안에 위치시켜 주세요';
+    scanning = true;
+    timer = setInterval(tick, 350);
+  }
+}
+
+document.getElementById('manualId').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') doManual();
+});
+</script>
+</body>
+</html>

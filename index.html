@@ -1,0 +1,477 @@
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+<style>
+#maumStore * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+#maumStore {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: #F4F6FF;
+  border-radius: 20px;
+  overflow: hidden;
+  max-width: 720px;
+  margin: 0 auto;
+  box-shadow: 0 8px 40px rgba(43,92,230,0.13);
+}
+#maumStore .ms-progress-wrap { height: 5px; background: #E0E4F0; }
+#maumStore .ms-progress-bar { height: 100%; background: linear-gradient(90deg,#2B5CE6,#7C3AED); transition: width .5s cubic-bezier(.4,0,.2,1); width: 25%; }
+#maumStore .ms-header { background: #2B5CE6; color: white; padding: 24px 28px 20px; position: relative; overflow: hidden; }
+#maumStore .ms-header::after { content: '♥ ▼ ☎ ●'; position: absolute; right: 20px; top: 18px; font-size: 18px; letter-spacing: 4px; opacity: .2; }
+#maumStore .ms-header-label { font-size: 11px; font-weight: 700; letter-spacing: 3px; opacity: .75; margin-bottom: 4px; }
+#maumStore .ms-header-title { font-size: 22px; font-weight: 900; line-height: 1.3; }
+#maumStore .ms-header-sub { font-size: 12px; opacity: .7; margin-top: 4px; }
+#maumStore .ms-steps { display: flex; background: white; border-bottom: 1px solid #E0E4F0; overflow-x: auto; scrollbar-width: none; }
+#maumStore .ms-steps::-webkit-scrollbar { display: none; }
+#maumStore .ms-step { flex: 1; min-width: 70px; padding: 12px 6px 10px; text-align: center; font-size: 10px; font-weight: 500; color: #9CA3AF; position: relative; }
+#maumStore .ms-step.active { color: #2B5CE6; font-weight: 700; }
+#maumStore .ms-step.done { color: #22C55E; }
+#maumStore .ms-step.active::after { content: ''; position: absolute; bottom: 0; left: 10%; right: 10%; height: 3px; background: #2B5CE6; border-radius: 3px 3px 0 0; }
+#maumStore .ms-step-num { display: block; width: 22px; height: 22px; border-radius: 50%; border: 2px solid currentColor; margin: 0 auto 3px; line-height: 18px; font-size: 10px; font-weight: 700; }
+#maumStore .ms-step.active .ms-step-num { background: #2B5CE6; border-color: #2B5CE6; color: white; }
+#maumStore .ms-step.done .ms-step-num { background: #22C55E; border-color: #22C55E; color: white; }
+#maumStore .ms-section { display: none; padding: 20px 20px 16px; }
+#maumStore .ms-section.active { display: block; animation: msFade .35s ease; }
+@keyframes msFade { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+#maumStore .ms-sec-title { font-size: 19px; font-weight: 900; color: #1A3BB8; margin-bottom: 4px; }
+#maumStore .ms-sec-desc { font-size: 12.5px; color: #6B7280; margin-bottom: 16px; line-height: 1.6; }
+#maumStore .ms-card { background: white; border-radius: 16px; padding: 18px; margin-bottom: 14px; border: 1px solid #E0E4F0; box-shadow: 0 2px 12px rgba(43,92,230,0.07); }
+#maumStore .ms-card-title { font-size: 11px; font-weight: 700; color: #9CA3AF; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 14px; }
+#maumStore .ms-field { margin-bottom: 16px; }
+#maumStore .ms-field:last-child { margin-bottom: 0; }
+#maumStore .ms-label { display: block; font-size: 12.5px; font-weight: 700; color: #1A1A2E; margin-bottom: 6px; }
+#maumStore .ms-label .req { color: #FF5C5C; margin-left: 2px; }
+#maumStore .ms-label .opt { color: #9CA3AF; font-weight: 400; font-size: 11px; margin-left: 3px; }
+#maumStore input[type=text].ms-input, #maumStore input[type=tel].ms-input, #maumStore input[type=date].ms-input { width: 100%; padding: 13px 15px; border: 2px solid #E0E4F0; border-radius: 11px; font-size: 15px; font-family: 'Noto Sans KR', sans-serif; color: #1A1A2E; background: white; outline: none; transition: border-color .2s, box-shadow .2s; -webkit-appearance: none; appearance: none; }
+#maumStore input[type=text].ms-input:focus, #maumStore input[type=tel].ms-input:focus, #maumStore input[type=date].ms-input:focus { border-color: #2B5CE6; box-shadow: 0 0 0 4px rgba(43,92,230,.1); }
+#maumStore .ms-radio-group { display: flex; flex-wrap: wrap; gap: 8px; }
+#maumStore .ms-radio-btn { flex: 1; min-width: 70px; padding: 11px 8px; border: 2px solid #E0E4F0; border-radius: 11px; text-align: center; font-size: 13px; font-weight: 500; cursor: pointer; transition: all .2s; background: white; color: #1A1A2E; user-select: none; }
+#maumStore .ms-radio-btn.selected { border-color: #2B5CE6; background: #EEF2FF; color: #2B5CE6; font-weight: 700; }
+#maumStore .ms-check-wrap { display: flex; align-items: flex-start; gap: 10px; padding: 13px; border: 2px solid #E0E4F0; border-radius: 11px; cursor: pointer; transition: all .2s; background: white; margin-bottom: 8px; }
+#maumStore .ms-check-wrap:last-child { margin-bottom: 0; }
+#maumStore .ms-check-wrap.checked { border-color: #2B5CE6; background: #EEF2FF; }
+#maumStore .ms-check-box { width: 20px; height: 20px; min-width: 20px; border: 2px solid #D1D5DB; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: white; background: white; transition: all .2s; }
+#maumStore .ms-check-wrap.checked .ms-check-box { background: #2B5CE6; border-color: #2B5CE6; }
+#maumStore .ms-check-label { font-size: 13px; line-height: 1.5; color: #1A1A2E; }
+#maumStore .ms-check-label strong { display: block; font-weight: 700; margin-bottom: 1px; font-size: 13px; }
+#maumStore .ms-privacy-box { background: #F8F9FF; border: 1px solid #E0E4F0; border-radius: 10px; padding: 12px 14px; font-size: 12px; color: #6B7280; line-height: 1.7; max-height: 130px; overflow-y: auto; margin-bottom: 12px; }
+#maumStore .ms-q-divider { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: #9CA3AF; text-transform: uppercase; margin: 20px 0 12px; display: flex; align-items: center; gap: 8px; }
+#maumStore .ms-q-divider::after { content: ''; flex: 1; height: 1px; background: #E0E4F0; }
+#maumStore .ms-q-card { background: white; border: 2px solid #E0E4F0; border-radius: 16px; padding: 17px; margin-bottom: 12px; transition: border-color .2s; }
+#maumStore .ms-q-card.answered { border-color: #A5B4FC; }
+#maumStore .ms-q-num { display: inline-block; background: #2B5CE6; color: white; border-radius: 6px; padding: 2px 8px; font-size: 10px; font-weight: 700; margin-bottom: 8px; }
+#maumStore .ms-q-text { font-size: 14px; font-weight: 500; line-height: 1.6; margin-bottom: 12px; }
+#maumStore .ms-q-sub { font-size: 11px; color: #9CA3AF; }
+#maumStore .ms-q-options { display: flex; flex-direction: column; gap: 7px; }
+#maumStore .ms-q-option { padding: 11px 14px; border: 2px solid #E0E4F0; border-radius: 10px; font-size: 13px; cursor: pointer; transition: all .2s; background: white; display: flex; align-items: center; gap: 9px; }
+#maumStore .ms-q-option.selected { border-color: #2B5CE6; background: #EEF2FF; color: #2B5CE6; font-weight: 600; }
+#maumStore .ms-q-dot { width: 14px; height: 14px; min-width: 14px; border: 2px solid #D1D5DB; border-radius: 50%; transition: all .2s; }
+#maumStore .ms-q-option.selected .ms-q-dot { background: #2B5CE6; border-color: #2B5CE6; }
+#maumStore .ms-q-score { color: #9CA3AF; font-size: 11px; margin-left: auto; }
+#maumStore .ms-result-card { border-radius: 16px; padding: 24px; margin-bottom: 14px; text-align: center; }
+#maumStore .ms-result-card.no-help { background: linear-gradient(135deg,#F0FDF4,#DCFCE7); border: 2px solid #86EFAC; }
+#maumStore .ms-result-card.need-help { background: linear-gradient(135deg,#FFF7ED,#FFEDD5); border: 2px solid #FCA5A5; }
+#maumStore .ms-result-icon { font-size: 44px; margin-bottom: 10px; }
+#maumStore .ms-result-type { font-size: 11px; font-weight: 700; letter-spacing: 2px; opacity: .6; margin-bottom: 6px; }
+#maumStore .ms-result-title { font-size: 18px; font-weight: 900; margin-bottom: 8px; color: #1A1A2E; }
+#maumStore .ms-result-desc { font-size: 13px; line-height: 1.7; opacity: .8; }
+#maumStore .ms-score-row { display: flex; gap: 10px; margin-bottom: 14px; }
+#maumStore .ms-score-box { flex: 1; background: white; border-radius: 12px; padding: 14px 10px; text-align: center; box-shadow: 0 2px 12px rgba(43,92,230,.08); border: 1px solid #E0E4F0; }
+#maumStore .ms-score-box .val { font-size: 26px; font-weight: 900; color: #2B5CE6; line-height: 1; margin-bottom: 3px; }
+#maumStore .ms-score-box .lbl { font-size: 10px; color: #9CA3AF; font-weight: 500; }
+#maumStore .ms-next-action { background: white; border-radius: 14px; padding: 15px 18px; border: 1px solid #E0E4F0; box-shadow: 0 2px 12px rgba(43,92,230,.07); margin-bottom: 10px; }
+#maumStore .ms-next-action .tag { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: #2B5CE6; margin-bottom: 5px; }
+#maumStore .ms-next-action p { font-size: 13px; line-height: 1.6; }
+#maumStore .ms-alert { background: #FFF3CD; border: 1px solid #FBBF24; border-radius: 10px; padding: 11px 13px; font-size: 12.5px; color: #92400E; line-height: 1.6; margin-bottom: 14px; }
+#maumStore .ms-btn-row { display: flex; gap: 10px; padding: 16px 20px; background: white; border-top: 1px solid #E0E4F0; }
+#maumStore .ms-btn { flex: 1; padding: 15px; border-radius: 12px; border: none; font-size: 15px; font-weight: 700; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: all .2s; letter-spacing: .3px; }
+#maumStore .ms-btn:active { transform: scale(.97); }
+#maumStore .ms-btn-primary { background: #2B5CE6; color: white; box-shadow: 0 4px 14px rgba(43,92,230,.3); }
+#maumStore .ms-btn-primary:hover { background: #1A3BB8; }
+#maumStore .ms-btn-primary:disabled { background: #E0E4F0; color: #9CA3AF; box-shadow: none; cursor: not-allowed; }
+#maumStore .ms-btn-ghost { background: #F4F6FF; color: #9CA3AF; border: 2px solid #E0E4F0; flex: 0 0 76px; }
+#maumStore .ms-complete { text-align: center; padding: 36px 20px 28px; }
+#maumStore .ms-complete-icon { font-size: 60px; margin-bottom: 16px; }
+#maumStore .ms-complete-title { font-size: 22px; font-weight: 900; color: #1A3BB8; margin-bottom: 10px; }
+#maumStore .ms-complete-sub { font-size: 13px; color: #6B7280; line-height: 1.7; margin-bottom: 20px; }
+#maumStore .ms-complete-id { background: #EEF2FF; border: 2px solid #2B5CE6; border-radius: 14px; padding: 16px; margin-bottom: 16px; }
+#maumStore .ms-complete-id .id-label { font-size: 10px; color: #2B5CE6; font-weight: 700; letter-spacing: 1px; margin-bottom: 5px; }
+#maumStore .ms-complete-id .id-val { font-size: 26px; font-weight: 900; color: #1A3BB8; letter-spacing: 3px; }
+#maumStore .ms-chip { display: inline-flex; align-items: center; gap: 5px; background: white; border: 1px solid #E0E4F0; border-radius: 100px; padding: 7px 12px; font-size: 12px; font-weight: 500; margin: 3px; }
+#maumStore .ms-age-display { padding: 12px 15px; background: #F4F6FF; border-radius: 10px; font-size: 14px; color: #9CA3AF; }
+#maumStore .ms-saving { text-align:center; padding: 20px; font-size: 14px; color: #6B7280; }
+#maumStore .ms-saving-spinner { display: inline-block; width: 28px; height: 28px; border: 3px solid #E0E4F0; border-top-color: #2B5CE6; border-radius: 50%; animation: msSpin .8s linear infinite; margin-bottom: 10px; }
+@keyframes msSpin { to { transform: rotate(360deg); } }
+#maumStore .ms-error-box { background: #FEF2F2; border: 1px solid #FCA5A5; border-radius: 12px; padding: 14px 16px; font-size: 13px; color: #B91C1C; line-height: 1.6; margin-bottom: 14px; }
+</style>
+
+<div id="maumStore">
+  <div class="ms-progress-wrap"><div class="ms-progress-bar" id="msPb"></div></div>
+
+  <div class="ms-header">
+    <div class="ms-header-label">성동구 1인가구지원센터</div>
+    <div class="ms-header-title">서울마음편의점 성동</div>
+    <div class="ms-header-sub">이용자 등록 및 자가진단</div>
+  </div>
+
+  <div class="ms-steps">
+    <div class="ms-step active" id="msTab1"><span class="ms-step-num" id="msNum1">1</span>기본정보</div>
+    <div class="ms-step" id="msTab2"><span class="ms-step-num" id="msNum2">2</span>개인정보동의</div>
+    <div class="ms-step" id="msTab3"><span class="ms-step-num" id="msNum3">3</span>자가진단</div>
+    <div class="ms-step" id="msTab4"><span class="ms-step-num" id="msNum4">4</span>결과확인</div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="ms-section active" id="msStep1">
+    <div class="ms-sec-title">기본 정보 입력</div>
+    <div class="ms-sec-desc">등록을 위해 아래 정보를 입력해 주세요.</div>
+    <div class="ms-card">
+      <div class="ms-card-title">필수 정보</div>
+      <div class="ms-field"><label class="ms-label">성명 <span class="req">*</span></label><input type="text" class="ms-input" id="msName" placeholder="이름 입력"></div>
+      <div class="ms-field"><label class="ms-label">생년월일 <span class="req">*</span></label><input type="date" class="ms-input" id="msBirth"></div>
+      <div class="ms-field">
+        <label class="ms-label">성별 <span class="req">*</span></label>
+        <div class="ms-radio-group">
+          <div class="ms-radio-btn" onclick="msSelectR('gender','남성',this)">남성</div>
+          <div class="ms-radio-btn" onclick="msSelectR('gender','여성',this)">여성</div>
+        </div>
+      </div>
+      <div class="ms-field"><label class="ms-label">연락처 <span class="req">*</span></label><input type="tel" class="ms-input" id="msPhone" placeholder="010-0000-0000" maxlength="13"></div>
+      <div class="ms-field"><label class="ms-label">주소(동) <span class="req">*</span></label><input type="text" class="ms-input" id="msAddr" placeholder="예: 성수동, 왕십리동"></div>
+    </div>
+    <div class="ms-card">
+      <div class="ms-card-title">추가 정보</div>
+      <div class="ms-field">
+        <label class="ms-label">가구원수 <span class="req">*</span></label>
+        <div class="ms-radio-group">
+          <div class="ms-radio-btn" onclick="msSelectR('household','1인',this)">1인</div>
+          <div class="ms-radio-btn" onclick="msSelectR('household','2인',this)">2인</div>
+          <div class="ms-radio-btn" onclick="msSelectR('household','3인',this)">3인</div>
+          <div class="ms-radio-btn" onclick="msSelectR('household','기타',this)">기타</div>
+        </div>
+      </div>
+      <div class="ms-field">
+        <label class="ms-label">참여 유형 <span class="req">*</span></label>
+        <div class="ms-radio-group">
+          <div class="ms-radio-btn" style="min-width:130px" onclick="msSelectR('usertype','신규',this)">신규 이용자<br><small style="font-weight:400;font-size:10px;opacity:.7">처음 방문</small></div>
+          <div class="ms-radio-btn" style="min-width:130px" onclick="msSelectR('usertype','기존',this)">기존 이용자<br><small style="font-weight:400;font-size:10px;opacity:.7">센터 기이용</small></div>
+        </div>
+      </div>
+      <div class="ms-field">
+        <label class="ms-label">연령대 <span class="opt">(자동계산)</span></label>
+        <div class="ms-age-display" id="msAgeDisplay">생년월일 입력 시 자동 표시됩니다</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="ms-section" id="msStep2">
+    <div class="ms-sec-title">개인정보 수집 동의</div>
+    <div class="ms-sec-desc">서비스 제공을 위해 아래 항목에 동의해 주세요.</div>
+    <div class="ms-card">
+      <div class="ms-card-title">수집 항목 및 목적</div>
+      <div class="ms-privacy-box">
+        <strong>수집 항목</strong><br>[필수] 성명, 생년월일, 연락처 / [선택] 건강상태, 생활실태 등<br><br>
+        <strong>수집 목적</strong><br>사회복지사업의 신청·조사, 서비스 제공 및 유형 결정, 통계 관리<br><br>
+        <strong>보유 기간</strong><br>사무처리 종료 후 5년<br><br>
+        <strong>제3자 제공</strong><br>서울시청, 성동구청, 서울시복지재단(고립예방센터) 등<br><br>
+        ※ 동의 거부 시 사업 참여에 일부 제한이 있을 수 있습니다.
+      </div>
+      <div class="ms-check-wrap" onclick="msToggleCheck(this)"><div class="ms-check-box">✓</div><div class="ms-check-label"><strong>[필수] 일반정보 수집·이용 동의</strong>성명, 생년월일, 연락처 등 기본 정보 수집에 동의합니다.</div></div>
+      <div class="ms-check-wrap" onclick="msToggleCheck(this)"><div class="ms-check-box">✓</div><div class="ms-check-label"><strong>[필수] 민감정보 수집·이용 동의</strong>건강상태, 생활실태 등 민감정보 수집에 동의합니다.</div></div>
+      <div class="ms-check-wrap" onclick="msToggleCheck(this)"><div class="ms-check-box">✓</div><div class="ms-check-label"><strong>[필수] 제3자 제공 동의</strong>서비스 연계를 위한 관련 기관 정보 제공에 동의합니다.</div></div>
+      <div class="ms-check-wrap" onclick="msToggleCheck(this)"><div class="ms-check-box">✓</div><div class="ms-check-label"><strong>[필수] 이용 수칙 확인 및 준수</strong>서울마음편의점 이용 수칙을 확인하고 준수하겠습니다.</div></div>
+      <div class="ms-check-wrap" onclick="msToggleCheck(this)"><div class="ms-check-box">✓</div><div class="ms-check-label"><strong>[선택] 홍보 사진·영상 활용 동의</strong>사업 홍보 목적의 사진·영상 활용에 동의합니다.</div></div>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="ms-section" id="msStep3">
+    <div class="ms-sec-title">외로움·고립위험 자가진단</div>
+    <div class="ms-sec-desc">지난 4주간의 상황을 떠올리며 응답해 주세요. (12문항, 약 3분)</div>
+    <div class="ms-alert">🔒 이 진단 결과는 낙인이나 불이익과 무관하며, 더 나은 서비스 연계를 위해 활용됩니다.</div>
+
+    <div class="ms-q-divider">관계단절 상황 · 외로움 (1~3번)</div>
+    <div class="ms-q-card" id="msQ1"><div class="ms-q-num">문항 1</div><div class="ms-q-text">나는 같이 있어 줄 사람이 부족하다고 자주 느낀다. <span class="ms-q-sub">지난 4주간</span></div><div class="ms-q-options"><div class="ms-q-option" onclick="msSelectQ('q1','1',this)"><div class="ms-q-dot"></div>거의 없다<span class="ms-q-score">1점</span></div><div class="ms-q-option" onclick="msSelectQ('q1','2',this)"><div class="ms-q-dot"></div>조금 그렇다<span class="ms-q-score">2점</span></div><div class="ms-q-option" onclick="msSelectQ('q1','3',this)"><div class="ms-q-dot"></div>자주 그렇다<span class="ms-q-score">3점</span></div></div></div>
+    <div class="ms-q-card" id="msQ2"><div class="ms-q-num">문항 2</div><div class="ms-q-text">나는 혼자 남겨진 것 같다고 자주 느낀다. <span class="ms-q-sub">지난 4주간</span></div><div class="ms-q-options"><div class="ms-q-option" onclick="msSelectQ('q2','1',this)"><div class="ms-q-dot"></div>거의 없다<span class="ms-q-score">1점</span></div><div class="ms-q-option" onclick="msSelectQ('q2','2',this)"><div class="ms-q-dot"></div>조금 그렇다<span class="ms-q-score">2점</span></div><div class="ms-q-option" onclick="msSelectQ('q2','3',this)"><div class="ms-q-dot"></div>자주 그렇다<span class="ms-q-score">3점</span></div></div></div>
+    <div class="ms-q-card" id="msQ3"><div class="ms-q-num">문항 3</div><div class="ms-q-text">나는 사람들 사이에서 고립되어 있다고 자주 느낀다. <span class="ms-q-sub">지난 4주간</span></div><div class="ms-q-options"><div class="ms-q-option" onclick="msSelectQ('q3','1',this)"><div class="ms-q-dot"></div>거의 없다<span class="ms-q-score">1점</span></div><div class="ms-q-option" onclick="msSelectQ('q3','2',this)"><div class="ms-q-dot"></div>조금 그렇다<span class="ms-q-score">2점</span></div><div class="ms-q-option" onclick="msSelectQ('q3','3',this)"><div class="ms-q-dot"></div>자주 그렇다<span class="ms-q-score">3점</span></div></div></div>
+
+    <div class="ms-q-divider">관계단절 상황 · 사회적 고립 (4~5번)</div>
+    <div class="ms-sec-desc" style="margin-bottom:12px">도움 줄 사람은 가족, 친구, 이웃, 공공기관 담당자도 포함됩니다.</div>
+    <div class="ms-q-card" id="msQ4"><div class="ms-q-num">문항 4</div><div class="ms-q-text">나는 몸이 아파서 도움이 필요할 때 도움 줄 사람이 있다.</div><div class="ms-q-options"><div class="ms-q-option" onclick="msSelectQ('q4','0',this)"><div class="ms-q-dot"></div>있다<span class="ms-q-score">0점</span></div><div class="ms-q-option" onclick="msSelectQ('q4','1',this)"><div class="ms-q-dot"></div>없다<span class="ms-q-score">1점</span></div></div></div>
+    <div class="ms-q-card" id="msQ5"><div class="ms-q-num">문항 5</div><div class="ms-q-text">나는 낙심하거나 우울해서 이야기 상대가 필요할 때 들어줄 사람이 있다.</div><div class="ms-q-options"><div class="ms-q-option" onclick="msSelectQ('q5','0',this)"><div class="ms-q-dot"></div>있다<span class="ms-q-score">0점</span></div><div class="ms-q-option" onclick="msSelectQ('q5','1',this)"><div class="ms-q-dot"></div>없다<span class="ms-q-score">1점</span></div></div></div>
+
+    <div class="ms-q-divider">일상생활 관리 상황 (6~12번)</div>
+    <div class="ms-q-card" id="msQ6"><div class="ms-q-num">문항 6</div><div class="ms-q-text">개인위생과 집안 청소 등 관리가 되고 있다. <span class="ms-q-sub">위생관리</span></div><div class="ms-q-options"><div class="ms-q-option" onclick="msSelectQ('q6','0',this)"><div class="ms-q-dot"></div>그렇다</div><div class="ms-q-option" onclick="msSelectQ('q6','1',this)"><div class="ms-q-dot"></div>아니다</div></div></div>
+    <div class="ms-q-card" id="msQ7"><div class="ms-q-num">문항 7</div><div class="ms-q-text">끼니를 거르거나 폭식하지 않고 꾸준히 식사관리를 한다. <span class="ms-q-sub">식사관리</span></div><div class="ms-q-options"><div class="ms-q-option" onclick="msSelectQ('q7','0',this)"><div class="ms-q-dot"></div>그렇다</div><div class="ms-q-option" onclick="msSelectQ('q7','1',this)"><div class="ms-q-dot"></div>아니다</div></div></div>
+    <div class="ms-q-card" id="msQ8"><div class="ms-q-num">문항 8</div><div class="ms-q-text">생활비, 용돈과 공과금 납부를 잘 관리한다. <span class="ms-q-sub">재정관리</span></div><div class="ms-q-options"><div class="ms-q-option" onclick="msSelectQ('q8','0',this)"><div class="ms-q-dot"></div>그렇다</div><div class="ms-q-option" onclick="msSelectQ('q8','1',this)"><div class="ms-q-dot"></div>아니다</div></div></div>
+    <div class="ms-q-card" id="msQ9"><div class="ms-q-num">문항 9</div><div class="ms-q-text">건강에 문제가 있을 때 병원도 가고 약도 잘 챙겨 먹는다. <span class="ms-q-sub">건강관리</span></div><div class="ms-q-options"><div class="ms-q-option" onclick="msSelectQ('q9','0',this)"><div class="ms-q-dot"></div>그렇다</div><div class="ms-q-option" onclick="msSelectQ('q9','1',this)"><div class="ms-q-dot"></div>아니다</div></div></div>
+    <div class="ms-q-card" id="msQ10"><div class="ms-q-num">문항 10</div><div class="ms-q-text">필요한 활동이나 만남을 위해 외출한다. <span class="ms-q-sub">외출/은둔</span></div><div class="ms-q-options"><div class="ms-q-option" onclick="msSelectQ('q10','0',this)"><div class="ms-q-dot"></div>그렇다</div><div class="ms-q-option" onclick="msSelectQ('q10','1',this)"><div class="ms-q-dot"></div>아니다</div></div></div>
+    <div class="ms-q-card" id="msQ11"><div class="ms-q-num">문항 11</div><div class="ms-q-text">다른 사람과 직접 만나서 대화하거나 교류한다. <span class="ms-q-sub">대인관계</span></div><div class="ms-q-options"><div class="ms-q-option" onclick="msSelectQ('q11','0',this)"><div class="ms-q-dot"></div>그렇다</div><div class="ms-q-option" onclick="msSelectQ('q11','1',this)"><div class="ms-q-dot"></div>아니다</div></div></div>
+    <div class="ms-q-card" id="msQ12"><div class="ms-q-num">문항 12</div><div class="ms-q-text">일상생활이나 수면 패턴이 규칙적이다. <span class="ms-q-sub">생활패턴</span></div><div class="ms-q-options"><div class="ms-q-option" onclick="msSelectQ('q12','0',this)"><div class="ms-q-dot"></div>그렇다</div><div class="ms-q-option" onclick="msSelectQ('q12','1',this)"><div class="ms-q-dot"></div>아니다</div></div></div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="ms-section" id="msStep4">
+    <div class="ms-sec-title">자가진단 결과</div>
+    <div class="ms-sec-desc">아래 결과를 담당자와 함께 확인해 주세요.</div>
+    <div id="msResultCard"></div>
+    <div class="ms-score-row">
+      <div class="ms-score-box"><div class="val" id="msSc1">-</div><div class="lbl">외로움 점수<br>(최대 9점)</div></div>
+      <div class="ms-score-box"><div class="val" id="msSc2">-</div><div class="lbl">사회적고립<br>(최대 2점)</div></div>
+      <div class="ms-score-box"><div class="val" id="msSc3">-</div><div class="lbl">일상생활<br>어려움 수</div></div>
+    </div>
+    <div id="msNextAction"></div>
+    <div id="msErrorBox"></div>
+  </div>
+
+  <!-- SAVING -->
+  <div class="ms-section" id="msSaving">
+    <div class="ms-saving">
+      <div class="ms-saving-spinner"></div>
+      <div>Google Sheets에 저장 중입니다…</div>
+    </div>
+  </div>
+
+  <!-- COMPLETE -->
+  <div class="ms-section" id="msComplete">
+    <div class="ms-complete">
+      <div class="ms-complete-icon">🎉</div>
+      <div class="ms-complete-title">등록이 완료되었습니다!</div>
+      <div class="ms-complete-sub">서울마음편의점 성동에<br>이용자로 등록되었습니다.<br>편안하게 이용해 주세요.</div>
+      <div class="ms-complete-id">
+        <div class="id-label">등록 번호</div>
+        <div class="id-val" id="msRegId">—</div>
+      </div>
+      <div id="msSummaryChips"></div>
+      <div style="margin-top:20px">
+        <button class="ms-btn ms-btn-primary" style="width:100%;margin-bottom:10px" onclick="msReset()">새 이용자 등록하기</button>
+        <div style="font-size:11px;color:#9CA3AF;line-height:1.6">
+          ※ 담당자가 결과를 확인하고 대상군을 분류합니다<br>
+          ※ 라면 등 식품은 주 1회 제공됩니다
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ms-btn-row" id="msBtnRow">
+    <button class="ms-btn ms-btn-ghost" id="msBtnBack" onclick="msBack()" style="display:none">◀ 이전</button>
+    <button class="ms-btn ms-btn-primary" id="msBtnNext" onclick="msNext()" disabled>다음 단계 →</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  // ★★★ 여기에 Google Apps Script 웹앱 URL을 넣으세요 ★★★
+  var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx00VJbLT4g5uaQY0NJ234TU6XncbBtad4cpuXCvfYq04Vqy8yHpl_7YvdrEAA1enYTfA/exec';
+
+  var cur = 1;
+  var fd = {};
+  var ans = {};
+
+  function $(id){ return document.getElementById(id); }
+
+  $('msName').addEventListener('input', msUpdateBtn);
+  $('msBirth').addEventListener('change', function(){
+    fd.birth = this.value;
+    var age = new Date().getFullYear() - new Date(this.value).getFullYear();
+    var g = age < 20 ? '미성년' : age <= 39 ? '청년(20~39세)' : age <= 64 ? '중장년(40~64세)' : '어르신(65세~)';
+    fd.ageGroup = g;
+    $('msAgeDisplay').innerHTML = '<strong style="color:#2B5CE6">'+age+'세</strong> · '+g;
+    msUpdateBtn();
+  });
+  $('msPhone').addEventListener('input', function(){
+    var v = this.value.replace(/\D/g,'').slice(0,11);
+    if(v.length >= 8) v = v.replace(/(\d{3})(\d{4})(\d+)/,'$1-$2-$3');
+    else if(v.length >= 4) v = v.replace(/(\d{3})(\d+)/,'$1-$2');
+    this.value = v;
+    msUpdateBtn();
+  });
+  $('msAddr').addEventListener('input', msUpdateBtn);
+
+  window.msSelectR = function(name, val, el){
+    fd[name] = val;
+    el.closest('.ms-radio-group').querySelectorAll('.ms-radio-btn').forEach(function(b){ b.classList.remove('selected'); });
+    el.classList.add('selected');
+    msUpdateBtn();
+  };
+
+  window.msToggleCheck = function(wrap){
+    wrap.classList.toggle('checked');
+    msUpdateBtn();
+  };
+
+  window.msSelectQ = function(qId, val, el){
+    ans[qId] = parseInt(val);
+    $('msQ'+qId.slice(1)).classList.add('answered');
+    $('msQ'+qId.slice(1)).querySelectorAll('.ms-q-option').forEach(function(o){ o.classList.remove('selected'); });
+    el.classList.add('selected');
+    msUpdateBtn();
+  };
+
+  function msValidate(step){
+    if(step===1){
+      return $('msName').value.trim() && $('msBirth').value &&
+             fd.gender && $('msPhone').value.length>=10 &&
+             $('msAddr').value.trim() && fd.household && fd.usertype;
+    }
+    if(step===2){
+      var checks = document.querySelectorAll('#msStep2 .ms-check-wrap');
+      for(var i=0;i<4;i++){ if(!checks[i].classList.contains('checked')) return false; }
+      return true;
+    }
+    if(step===3){
+      for(var i=1;i<=12;i++){ if(ans['q'+i]===undefined) return false; }
+      return true;
+    }
+    return true;
+  }
+
+  function msUpdateBtn(){
+    $('msBtnNext').disabled = !msValidate(cur);
+  }
+
+  window.msNext = function(){
+    if(!msValidate(cur)) return;
+    if(cur===3){ msCalcResult(); msShowStep(4); }
+    else if(cur===4){ msSaveToSheets(); }
+    else { msShowStep(cur+1); }
+  };
+
+  window.msBack = function(){
+    if(cur>1) msShowStep(cur-1);
+  };
+
+  function msShowStep(step){
+    document.querySelectorAll('#maumStore .ms-section').forEach(function(s){ s.classList.remove('active'); });
+    $('msStep'+step) && $('msStep'+step).classList.add('active');
+    [1,2,3,4].forEach(function(n){
+      var tab=$('msTab'+n), num=$('msNum'+n);
+      tab.classList.remove('active','done');
+      if(n<step){ tab.classList.add('done'); num.textContent=''; }
+      else if(n===step){ tab.classList.add('active'); num.textContent=n; }
+      else { num.textContent=n; }
+    });
+    cur=step;
+    $('msPb').style.width=(step/4*100)+'%';
+    $('msBtnBack').style.display=step>1?'block':'none';
+    $('msBtnNext').textContent=step===4?'등록 완료 →':'다음 단계 →';
+    $('msBtnNext').disabled=!msValidate(step);
+    $('maumStore').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  function msCalcResult(){
+    var loneScore=(ans.q1||0)+(ans.q2||0)+(ans.q3||0);
+    var isolScore=(ans.q4||0)+(ans.q5||0);
+    var dailyFail=[6,7,8,9,10,11,12].filter(function(i){ return ans['q'+i]===1; }).length;
+    var need1=loneScore>=6&&isolScore>=1;
+    var need2=dailyFail>=2;
+    $('msSc1').textContent=loneScore;
+    $('msSc2').textContent=isolScore;
+    $('msSc3').textContent=dailyFail;
+    var group,icon,title,desc,actionHTML;
+    if(!need1&&!need2){
+      group='예방군'; icon='😊'; title='현재는 도움이 필요하지 않은 상태입니다';
+      desc='외로움·고립 위험이 낮은 상태입니다. 편안하게 이용해 주세요!';
+      $('msResultCard').className='ms-result-card no-help';
+      actionHTML='<div class="ms-next-action"><div class="tag">✅ 이용 가능</div><p>소통공간 자유 이용, 주 1회 라면 등 식품 이용 가능합니다.</p></div>';
+    } else if(need1&&!need2){
+      group='관계지원군'; icon='🤝'; title='관계 지원이 도움이 될 수 있는 상태입니다';
+      desc='사회적 관계망 회복을 위한 프로그램을 안내해 드릴 수 있습니다.';
+      $('msResultCard').className='ms-result-card need-help';
+      actionHTML='<div class="ms-next-action"><div class="tag">👋 담당자 안내 필요</div><p>사회복지사와 짧은 상담 후 소규모 교류 프로그램 등을 안내받으실 수 있습니다.</p></div>';
+    } else if(!need1&&need2){
+      group='일상지원군'; icon='🌱'; title='일상생활 지원이 도움이 될 수 있는 상태입니다';
+      desc='일상 자기돌봄 회복을 위한 프로그램을 연계해 드릴 수 있습니다.';
+      $('msResultCard').className='ms-result-card need-help';
+      actionHTML='<div class="ms-next-action"><div class="tag">👋 담당자 안내 필요</div><p>사회복지사와 상담 후 일상돌봄 프로그램 등 맞춤 서비스를 안내받으실 수 있습니다.</p></div>';
+    } else {
+      group='일상위험고립군'; icon='💙'; title='전문적인 지원이 도움이 될 수 있는 상태입니다';
+      desc='담당 사회복지사가 더 자세한 이야기를 나누고 맞춤 서비스를 연결해 드립니다.';
+      $('msResultCard').className='ms-result-card need-help';
+      actionHTML='<div class="ms-next-action"><div class="tag">📋 사회복지사 상담 필요</div><p>추가 상담을 통해 가장 적합한 서비스를 안내해 드립니다. 담당자에게 도움을 요청해 주세요.</p></div>';
+    }
+    $('msResultCard').innerHTML='<div class="ms-result-icon">'+icon+'</div><div class="ms-result-type">자가진단 결과 · '+group+'</div><div class="ms-result-title">'+title+'</div><div class="ms-result-desc">'+desc+'</div>';
+    $('msNextAction').innerHTML=actionHTML;
+    fd.resultGroup=group;
+    fd.loneScore=$('msSc1').textContent;
+    fd.isolScore=$('msSc2').textContent;
+    fd.dailyFail=$('msSc3').textContent;
+  }
+
+  // ── Google Sheets 저장
+  function msSaveToSheets(){
+    // 저장 화면 표시
+    document.querySelectorAll('#maumStore .ms-section').forEach(function(s){ s.classList.remove('active'); });
+    $('msSaving').classList.add('active');
+    $('msBtnRow').style.display='none';
+    $('msPb').style.width='90%';
+
+    var regId = 'SD'+new Date().getFullYear()+'-'+String(Math.floor(Math.random()*9000)+1000);
+    var now = new Date();
+    var dateStr = now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate()+' '+now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
+
+    var payload = {
+      등록번호: regId,
+      등록일시: dateStr,
+      성명: $('msName').value,
+      생년월일: $('msBirth').value,
+      연령대: fd.ageGroup||'',
+      성별: fd.gender||'',
+      연락처: $('msPhone').value,
+      주소동: $('msAddr').value,
+      가구원수: fd.household||'',
+      참여유형: fd.usertype||'',
+      외로움점수: fd.loneScore||'',
+      사회적고립점수: fd.isolScore||'',
+      일상생활어려움수: fd.dailyFail||'',
+      대상군: fd.resultGroup||'',
+      일반정보동의: document.querySelectorAll('#msStep2 .ms-check-wrap')[0].classList.contains('checked')?'동의':'미동의',
+      민감정보동의: document.querySelectorAll('#msStep2 .ms-check-wrap')[1].classList.contains('checked')?'동의':'미동의',
+      제3자제공동의: document.querySelectorAll('#msStep2 .ms-check-wrap')[2].classList.contains('checked')?'동의':'미동의',
+      홍보동의: document.querySelectorAll('#msStep2 .ms-check-wrap')[4].classList.contains('checked')?'동의':'미동의'
+    };
+
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function(){
+      msShowComplete(regId, payload);
+    }).catch(function(){
+      // 네트워크 오류 시에도 완료 처리 (no-cors 특성상 성공 여부 확인 불가)
+      msShowComplete(regId, payload);
+    });
+  }
+
+  function msShowComplete(regId, payload){
+    document.querySelectorAll('#maumStore .ms-section').forEach(function(s){ s.classList.remove('active'); });
+    $('msComplete').classList.add('active');
+    $('msPb').style.width='100%';
+    $('msBtnRow').style.display='none';
+    $('msRegId').textContent=regId;
+    $('msSummaryChips').innerHTML=
+      '<div class="ms-chip">👤 '+payload.성명+'</div>'+
+      '<div class="ms-chip">📅 '+payload.연령대+'</div>'+
+      '<div class="ms-chip">🏠 '+payload.가구원수+' 가구</div>'+
+      '<div class="ms-chip">📍 '+payload.주소동+'</div>'+
+      '<div class="ms-chip">📊 '+payload.대상군+'</div>';
+    $('maumStore').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  window.msReset = function(){
+    ['msName','msPhone','msAddr'].forEach(function(id){ $(id).value=''; });
+    $('msBirth').value='';
+    document.querySelectorAll('#maumStore .ms-radio-btn').forEach(function(b){ b.classList.remove('selected'); });
+    document.querySelectorAll('#maumStore .ms-check-wrap').forEach(function(w){ w.classList.remove('checked'); });
+    document.querySelectorAll('#maumStore .ms-q-card').forEach(function(c){ c.classList.remove('answered'); });
+    document.querySelectorAll('#maumStore .ms-q-option').forEach(function(o){ o.classList.remove('selected'); });
+    ans={}; fd={};
+    $('msAgeDisplay').innerHTML='생년월일 입력 시 자동 표시됩니다';
+    $('msBtnRow').style.display='flex';
+    $('msBtnBack').style.display='none';
+    $('msBtnNext').textContent='다음 단계 →';
+    msShowStep(1);
+  };
+
+  msUpdateBtn();
+})();
+</script>
