@@ -4,182 +4,205 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>내 QR카드 — 서울마음편의점 성동</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Noto+Serif+KR:wght@700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
-* { box-sizing: border-box; margin:0; padding:0; }
-body { font-family:'Noto Sans KR',sans-serif; background: linear-gradient(135deg,#1A3BB8,#2B5CE6,#4F46E5); min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    background: #3B5BDB;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
 
-.card {
-  background: white; border-radius: 28px;
-  padding: 32px 28px 28px;
-  max-width: 340px; width: 100%;
-  box-shadow: 0 24px 80px rgba(0,0,0,.25);
-  text-align: center;
-}
+  /* 입력 화면 */
+  .input-wrap {
+    background: white;
+    border-radius: 24px;
+    padding: 36px 28px;
+    width: 100%;
+    max-width: 360px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+  .input-wrap .logo { font-size: 28px; margin-bottom: 8px; }
+  .input-wrap h2 { font-size: 18px; font-weight: 700; color: #1A1A2E; margin-bottom: 6px; }
+  .input-wrap p { font-size: 13px; color: #6B7280; margin-bottom: 24px; }
+  .input-wrap input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #E0E4F0;
+    border-radius: 12px;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 2px;
+    outline: none;
+    margin-bottom: 14px;
+    font-family: inherit;
+  }
+  .input-wrap input:focus { border-color: #3B5BDB; }
+  .input-wrap button {
+    width: 100%;
+    padding: 14px;
+    background: #3B5BDB;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .input-wrap button:hover { background: #2F4BC7; }
 
-.card-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: #EEF2FF; color: #2B5CE6;
-  border-radius: 100px; padding: 6px 14px;
-  font-size: 11px; font-weight: 700;
-  letter-spacing: 1.5px; margin-bottom: 20px;
-}
-
-.qr-wrap {
-  width: 200px; height: 200px;
-  margin: 0 auto 20px;
-  border-radius: 18px;
-  overflow: hidden;
-  border: 3px solid #EEF2FF;
-  display: flex; align-items:center; justify-content:center;
-}
-#qrcode { width:100%; height:100%; }
-#qrcode canvas, #qrcode img { width:100%!important; height:100%!important; }
-
-.member-name {
-  font-family: 'Noto Serif KR', serif;
-  font-size: 26px; font-weight: 700;
-  color: #0F1E4A; margin-bottom: 4px;
-}
-.member-id {
-  font-size: 13px; color: #9CA3AF;
-  letter-spacing: 2px; margin-bottom: 20px;
-}
-
-.info-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 8px; margin-bottom: 20px;
-}
-.info-cell {
-  background: #F8F9FF; border-radius: 12px; padding: 12px;
-  text-align: left;
-}
-.info-cell .l { font-size: 10px; color: #9CA3AF; font-weight: 700; letter-spacing: 1px; margin-bottom: 3px; }
-.info-cell .v { font-size: 13px; font-weight: 700; color: #1A1A2E; }
-
-.group-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  border-radius: 10px; padding: 10px 16px;
-  font-size: 13px; font-weight: 700; margin-bottom: 20px; width:100%; justify-content:center;
-}
-.g-예방군 { background:#F0FDF4; color:#16A34A; border:1.5px solid #86EFAC; }
-.g-관계지원군 { background:#EFF6FF; color:#2563EB; border:1.5px solid #93C5FD; }
-.g-일상지원군 { background:#FFFBEB; color:#D97706; border:1.5px solid #FCD34D; }
-.g-일상위험고립군 { background:#FFF7ED; color:#EA580C; border:1.5px solid #FDBA74; }
-
-.footer-note {
-  font-size: 11px; color: #D1D5DB; line-height: 1.6;
-  border-top: 1px solid #F3F4F6; padding-top: 14px;
-}
-
-/* 입력 화면 */
-.input-wrap { max-width: 340px; width:100%; }
-.input-card { background:white; border-radius:24px; padding:28px 24px; box-shadow:0 24px 80px rgba(0,0,0,.25); }
-.input-title { font-size:20px; font-weight:900; color:#0F1E4A; margin-bottom:6px; text-align:center; }
-.input-sub { font-size:13px; color:#9CA3AF; text-align:center; margin-bottom:20px; }
-.inp { width:100%; padding:14px 16px; border:2px solid #DDE3F5; border-radius:12px; font-size:16px; font-family:inherit; color:#1A1A2E; outline:none; margin-bottom:10px; text-align:center; letter-spacing:2px; }
-.inp:focus { border-color:#2B5CE6; }
-.inp-btn { width:100%; padding:15px; background:#2B5CE6; color:white; border:none; border-radius:12px; font-size:16px; font-weight:700; font-family:inherit; cursor:pointer; }
-.inp-btn:active { transform:scale(.97); }
+  /* QR 카드 */
+  .qr-card {
+    display: none;
+    background: white;
+    border-radius: 24px;
+    padding: 32px 28px 28px;
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+  .qr-card .badge {
+    display: inline-block;
+    background: #EEF2FF;
+    color: #3B5BDB;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+  }
+  .qr-box {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .qr-box canvas, .qr-box img {
+    width: 200px !important;
+    height: 200px !important;
+  }
+  .user-name {
+    font-size: 26px;
+    font-weight: 900;
+    color: #1A1A2E;
+    margin-bottom: 6px;
+  }
+  .user-id {
+    font-size: 14px;
+    color: #6B7280;
+    letter-spacing: 1px;
+    margin-bottom: 24px;
+  }
+  .guide {
+    font-size: 12px;
+    color: #9CA3AF;
+    line-height: 1.8;
+    border-top: 1px solid #F3F4F6;
+    padding-top: 16px;
+  }
+  .reset-btn {
+    margin-top: 16px;
+    background: none;
+    border: 1px solid #E0E4F0;
+    color: #9CA3AF;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+  }
 </style>
 </head>
 <body>
 
-<div id="inputWrap" class="input-wrap">
-  <div class="input-card">
-    <div style="font-size:44px;text-align:center;margin-bottom:14px">🏪</div>
-    <div class="input-title">내 QR카드 보기</div>
-    <div class="input-sub">등록 완료 후 받은 등록번호를 입력하세요</div>
-    <input type="text" class="inp" id="idInput" placeholder="SD2026-0000" maxlength="12">
-    <button class="inp-btn" onclick="showCard()">QR카드 보기</button>
-  </div>
+<!-- 입력 화면 -->
+<div class="input-wrap" id="inputWrap">
+  <div class="logo">🏪</div>
+  <h2>서울마음편의점 성동</h2>
+  <p>등록번호를 입력하면 QR카드가 생성됩니다</p>
+  <input type="text" id="idInput" placeholder="SD2026-0000" maxlength="12">
+  <input type="text" id="nameInput" placeholder="이름 (선택)" maxlength="10" style="margin-top:0;">
+  <button onclick="showCard()">QR카드 생성</button>
 </div>
 
-<div class="card" id="qrCard" style="display:none">
-  <div class="card-badge">🏪 서울마음편의점 성동</div>
-
-  <div class="qr-wrap">
-    <div id="qrcode"></div>
-  </div>
-
-  <div class="member-name" id="cardName">이용자</div>
-  <div class="member-id" id="cardId">SD2026-0000</div>
-
-  <div class="info-grid">
-    <div class="info-cell"><div class="l">연령대</div><div class="v" id="cardAge">—</div></div>
-    <div class="info-cell"><div class="l">가구원수</div><div class="v" id="cardHh">—</div></div>
-    <div class="info-cell"><div class="l">주소(동)</div><div class="v" id="cardAddr">—</div></div>
-    <div class="info-cell"><div class="l">등록일</div><div class="v" id="cardDate">—</div></div>
-  </div>
-
-  <div class="group-badge" id="cardGroup"></div>
-
-  <div class="footer-note">
+<!-- QR 카드 -->
+<div class="qr-card" id="qrCard">
+  <div class="badge">🏪 서울마음편의점 성동</div>
+  <div class="qr-box" id="qrcode"></div>
+  <div class="user-name" id="cardName">이용자</div>
+  <div class="user-id" id="cardId">SD2026-0000</div>
+  <div class="guide">
     방문 시 이 QR코드를 담당자에게 보여주세요<br>
     식품은 주 1회 제공됩니다
   </div>
+  <button class="reset-btn" onclick="reset()">다시 입력</button>
 </div>
 
 <script>
-// URL 파라미터로 자동 표시 지원
-// 예: qr-card.html?id=SD2026-1234&name=홍길동&age=청년&...
+// URL 파라미터로 자동 표시
 (function() {
-  var params = new URLSearchParams(window.location.search);
+  var params = new URLSearchParams(location.search);
   var id = params.get('id');
+  var name = params.get('name');
   if (id) {
-    var data = {
-      등록번호: id,
-      성명: params.get('name') || '이용자',
-      연령대: params.get('age') || '—',
-      가구원수: params.get('hh') || '—',
-      주소동: params.get('addr') || '—',
-      대상군: params.get('group') || '예방군',
-      등록일: params.get('date') || new Date().toLocaleDateString('ko-KR')
-    };
-    renderCard(data);
+    document.getElementById('idInput').value = id;
+    if (name) document.getElementById('nameInput').value = name;
+    showCard();
   }
 })();
 
 function showCard() {
   var id = document.getElementById('idInput').value.trim().toUpperCase();
-  if (!id) { alert('등록번호를 입력해주세요.'); return; }
-  if (!/^SD\d{4}-\d{4}$/.test(id)) { alert('올바른 형식으로 입력해주세요.\n예) SD2026-1234'); return; }
-  renderCard({ 등록번호: id, 성명: '이용자', 연령대: '—', 가구원수: '—', 주소동: '—', 대상군: '예방군', 등록일: '—' });
-}
+  var name = document.getElementById('nameInput').value.trim() || '이용자';
 
-function renderCard(d) {
+  if (!id) { alert('등록번호를 입력해주세요.'); return; }
+  if (!/^SD\d{4}-\d{4}$/.test(id)) {
+    alert('올바른 형식으로 입력해주세요.\n예) SD2026-1234');
+    return;
+  }
+
   document.getElementById('inputWrap').style.display = 'none';
   document.getElementById('qrCard').style.display = 'block';
+  document.getElementById('cardName').textContent = name;
+  document.getElementById('cardId').textContent = id;
 
-  document.getElementById('cardName').textContent = d.성명;
-  document.getElementById('cardId').textContent = d.등록번호;
-  document.getElementById('cardAge').textContent = d.연령대;
-  document.getElementById('cardHh').textContent = d.가구원수;
-  document.getElementById('cardAddr').textContent = d.주소동;
-  document.getElementById('cardDate').textContent = d.등록일;
-
-  var g = d.대상군 || '예방군';
-  var gEl = document.getElementById('cardGroup');
-  gEl.className = 'group-badge g-' + g;
-  gEl.textContent = '📊 ' + g;
-
-  // QR코드 생성 - 등록번호 + 이름만 담기
-  var qrData = d.등록번호 + '|' + d.성명;
-
+  // QR 생성 - 등록번호|이름 형식
   document.getElementById('qrcode').innerHTML = '';
   setTimeout(function() {
     new QRCode(document.getElementById('qrcode'), {
-      text: qrData,
-      width: 200, height: 200,
-      colorDark: '#0F1E4A',
+      text: id + '|' + name,
+      width: 200,
+      height: 200,
+      colorDark: '#1A1A2E',
       colorLight: '#FFFFFF',
       correctLevel: QRCode.CorrectLevel.M
     });
-  }, 100);
+  }, 50);
 }
 
-document.getElementById('idInput') && document.getElementById('idInput').addEventListener('keypress', function(e) {
+function reset() {
+  document.getElementById('qrCard').style.display = 'none';
+  document.getElementById('inputWrap').style.display = 'block';
+  document.getElementById('idInput').value = '';
+  document.getElementById('nameInput').value = '';
+  document.getElementById('qrcode').innerHTML = '';
+}
+
+document.getElementById('idInput').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') document.getElementById('nameInput').focus();
+});
+document.getElementById('nameInput').addEventListener('keypress', function(e) {
   if (e.key === 'Enter') showCard();
 });
 </script>
