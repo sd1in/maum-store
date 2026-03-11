@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>서울마음편의점 성동 | 이용자 등록</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root {
+    --mint: #4CBFA4;
+    --mint-light: #E8F7F3;
+    --mint-dark: #2E9E85;
+    --navy: #1A2B4A;
+    --navy-light: #2D4270;
+    --warm: #F9F6F0;
+    --gray: #6B7280;
+    --gray-light: #F3F4F6;
+    --red: #EF4444;
+    --yellow: #FBBF24;
+    --text: #1F2937;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--warm);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ===== HEADER ===== */
+  .header {
+    background: var(--navy);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(26,43,74,0.3);
+  }
+  .header-icon {
+    width: 36px; height: 36px;
+    background: var(--mint);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .header-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 17px;
+    color: white;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+  }
+  .header-sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.5px;
+  }
+
+  /* ===== PROGRESS ===== */
+  .progress-wrap {
+    background: white;
+    padding: 16px 20px;
+    border-bottom: 1px solid #E5E7EB;
+  }
+  .progress-steps {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+  .progress-line {
+    position: absolute;
+    top: 14px; left: 14px; right: 14px;
+    height: 2px;
+    background: #E5E7EB;
+    z-index: 0;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--mint);
+    transition: width 0.5s ease;
+  }
+  .step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    z-index: 1;
+    position: relative;
+  }
+  .step-circle {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: #E5E7EB;
+    color: #9CA3AF;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid #E5E7EB;
+    transition: all 0.3s;
+  }
+  .step-circle.active {
+    background: var(--mint);
+    border-color: var(--mint);
+    color: white;
+    box-shadow: 0 0 0 4px rgba(76,191,164,0.2);
+  }
+  .step-circle.done {
+    background: var(--mint-dark);
+    border-color: var(--mint-dark);
+    color: white;
+  }
+  .step-label {
+    font-size: 10px;
+    color: #9CA3AF;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .step-label.active { color: var(--mint-dark); font-weight: 700; }
+  .step-label.done { color: var(--mint-dark); }
+
+  /* ===== MAIN CONTENT ===== */
+  .main { padding: 20px 16px 100px; max-width: 500px; margin: 0 auto; }
+
+  .section-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .section-card.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--mint-light);
+  }
+  .card-badge {
+    background: var(--mint);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 20px;
+  }
+  .card-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 18px;
+    color: var(--navy);
+    font-weight: 600;
+  }
+
+  /* ===== FORM ===== */
+  .form-group { margin-bottom: 16px; }
+  .form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .form-label .required { color: var(--red); margin-left: 2px; }
+  .form-input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--text);
+    background: white;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+  .form-input:focus {
+    outline: none;
+    border-color: var(--mint);
+    box-shadow: 0 0 0 3px rgba(76,191,164,0.15);
+  }
+  .form-input::placeholder { color: #D1D5DB; }
+
+  .radio-group, .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .radio-item input, .checkbox-item input { display: none; }
+  .radio-item label, .checkbox-item label {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 14px;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--gray);
+    background: white;
+  }
+  .radio-item input:checked + label,
+  .checkbox-item input:checked + label {
+    background: var(--mint);
+    border-color: var(--mint);
+    color: white;
+    font-weight: 700;
+  }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* ===== 개인정보동의 ===== */
+  .consent-section {
+    background: var(--gray-light);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .consent-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .consent-tag {
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-weight: 700;
+  }
+  .tag-required { background: #FEE2E2; color: var(--red); }
+  .tag-optional { background: #DBEAFE; color: #2563EB; }
+
+  .consent-content {
+    font-size: 12px;
+    color: var(--gray);
+    line-height: 1.6;
+    margin-bottom: 12px;
+    max-height: 80px;
+    overflow-y: auto;
+    padding: 8px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #E5E7EB;
+  }
+  .consent-agree {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .consent-btn {
+    flex: 1;
+    padding: 9px;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    background: white;
+    color: var(--gray);
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: all 0.2s;
+  }
+  .consent-btn.agree-yes.selected { background: var(--mint); border-color: var(--mint); color: white; }
+  .consent-btn.agree-no.selected { background: #EF4444; border-color: #EF4444; color: white; }
+
+  /* ===== 자가진단 ===== */
+  .diagnosis-intro {
+    background: var(--mint-light);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: var(--navy);
+    line-height: 1.6;
+  }
+  .diagnosis-section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    background: var(--navy);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 8px;
+    margin: 20px 0 14px;
+  }
+  .diagnosis-section-sub {
+    font-size: 11px;
+    opacity: 0.75;
+    font-weight: 400;
+  }
+
+  .question-item {
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #F3F4F6;
+  }
+  .question-item:last-child { border-bottom: none; }
+  .question-text {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--text);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .question-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px; height: 22px;
+    background: var(--mint);
+    color: white;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 700;
+    margin-right: 6px;
+    flex-shrink: 0;
+  }
+  .answer-options {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .answer-option input { display: none; }
+  .answer-option label {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 10px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    gap: 8px;
+    color: var(--gray);
+  }
+  .answer-option label::before {
+    content: '';
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 2px solid #D1D5DB;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .answer-option input:checked + label {
+    border-color: var(--mint);
+    background: var(--mint-light);
+    color: var(--navy);
+    font-weight: 600;
+  }
+  .answer-option input:checked + label::before {
+    background: var(--mint);
+    border-color: var(--mint);
+  }
+
+  /* ===== QR 발급 ===== */
+  .qr-wrap {
+    text-align: center;
+    padding: 10px 0;
+  }
+  .qr-member-id {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    font-family: 'Noto Serif KR', serif;
+  }
+  .qr-member-label {
+    font-size: 12px;
+    color: var(--gray);
+    margin-bottom: 24px;
+  }
+  #qrcode {
+    display: inline-block;
+    padding: 16px;
+    background: white;
+    border-radius: 16px;
+    border: 2px solid var(--mint-light);
+    box-shadow: 0 4px 20px rgba(76,191,164,0.15);
+    margin-bottom: 16px;
+  }
+  .qr-name {
+    font-size: 15px;
+    color: var(--navy);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .qr-note {
+    font-size: 12px;
+    color: var(--gray);
+    line-height: 1.6;
+    background: var(--mint-light);
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-top: 16px;
+    text-align: left;
+  }
+
+  /* 직원 스캔 결과 */
+  .score-summary {
+    background: var(--mint-light);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 12px;
+  }
+  .score-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(76,191,164,0.2);
+    font-size: 13px;
+  }
+  .score-row:last-child { border-bottom: none; }
+  .score-label { color: var(--navy); font-weight: 500; }
+  .score-val {
+    font-weight: 700;
+    color: var(--mint-dark);
+    font-size: 15px;
+  }
+  .alert-badge {
+    display: inline-flex;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .alert-high { background: #FEE2E2; color: #DC2626; }
+  .alert-mid { background: #FEF3C7; color: #D97706; }
+  .alert-low { background: #D1FAE5; color: #059669; }
+
+  /* ===== BOTTOM BUTTON ===== */
+  .bottom-btn-wrap {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: white;
+    padding: 12px 16px 20px;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+  }
+  .btn-primary {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    display: block;
+    padding: 16px;
+    background: var(--mint);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: -0.3px;
+  }
+  .btn-primary:hover { background: var(--mint-dark); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(76,191,164,0.4); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-primary:disabled { background: #D1D5DB; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  .btn-secondary {
+    width: 100%;
+    max-width: 500px;
+    margin: 8px auto 0;
+    display: block;
+    padding: 12px;
+    background: transparent;
+    color: var(--gray);
+    border: 1.5px solid #E5E7EB;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+  }
+
+  /* ===== 직원용 스캔 모달 ===== */
+  .staff-btn {
+    position: fixed;
+    bottom: 80px; right: 16px;
+    background: var(--navy);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(26,43,74,0.3);
+    z-index: 50;
+  }
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: white;
+    border-radius: 20px;
+    padding: 28px 24px;
+    width: 100%;
+    max-width: 400px;
+    animation: fadeIn 0.25s ease;
+  }
+  .modal-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 20px;
+    color: var(--navy);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .modal-sub {
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 20px;
+  }
+  .scan-input-wrap {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .scan-input {
+    flex: 1;
+    padding: 12px 14px;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--text);
+  }
+  .scan-input:focus { outline: none; border-color: var(--mint); }
+  .scan-submit-btn {
+    padding: 12px 18px;
+    background: var(--mint);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .scan-result {
+    background: var(--gray-light);
+    border-radius: 12px;
+    padding: 16px;
+    display: none;
+  }
+  .scan-result.show { display: block; }
+  .scan-result-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .scan-result-info {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.8;
+  }
+  .visit-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--mint);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 10px;
+  }
+  .modal-close-btn {
+    width: 100%;
+    margin-top: 16px;
+    padding: 12px;
+    background: var(--gray-light);
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    color: var(--gray);
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .error-msg { color: var(--red); font-size: 12px; margin-top: 6px; display: none; }
+  .loading-text { text-align: center; color: var(--gray); font-size: 13px; padding: 12px; }
+
+  /* ===== 추가 조사 문항 ===== */
+  .extra-survey {
+    margin-top: 24px;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .extra-title {
+    background: var(--navy-light);
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 11px 16px;
+    letter-spacing: -0.3px;
+  }
+  .extra-survey .form-group {
+    padding: 16px;
+    border-bottom: 1px solid #F3F4F6;
+    margin-bottom: 0;
+  }
+  .extra-survey .form-group:last-child { border-bottom: none; }
+  .survey-sub-section {
+    margin-top: 12px;
+    padding: 12px;
+    background: var(--gray-light);
+    border-radius: 10px;
+  }
+  .survey-sub-section:first-child { margin-top: 8px; }
+  .survey-sub-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .sub-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  /* ===== 참여시민 수칙·권리 ===== */
+  .rights-section {
+    margin-top: 24px;
+    border: 1.5px solid var(--mint);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .rights-title {
+    background: var(--navy);
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 11px 16px;
+    letter-spacing: -0.3px;
+  }
+  .rights-list {
+    padding: 16px 16px 16px 32px;
+    list-style: decimal;
+    border-bottom: 1px solid var(--mint-light);
+    background: white;
+  }
+  .rights-list li {
+    font-size: 12.5px;
+    color: var(--text);
+    line-height: 1.7;
+    margin-bottom: 10px;
+  }
+  .rights-list li:last-child { margin-bottom: 0; }
+  .rights-etc { color: #2563EB !important; font-style: italic; }
+  .rights-agree-wrap { padding: 16px; background: var(--mint-light); }
+  .rights-agree-text {
+    font-size: 13px; color: var(--navy); font-weight: 500;
+    text-align: center; line-height: 1.8; margin-bottom: 16px;
+  }
+  .signature-row {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px; margin-bottom: 14px;
+  }
+  .signature-date-label { font-size: 13px; color: var(--navy); font-weight: 500; }
+  .signature-box {
+    display: flex; align-items: center; gap: 8px;
+    background: white; border: 1.5px solid var(--mint);
+    border-radius: 10px; padding: 6px 12px;
+  }
+  .signature-label { font-size: 12px; color: var(--gray); font-weight: 700; white-space: nowrap; }
+  #sigCanvas { cursor: crosshair; border-left: 1px solid #E5E7EB; padding-left: 8px; }
+  .sig-clear-btn {
+    font-size: 11px; color: var(--gray); background: var(--gray-light);
+    border: 1px solid #E5E7EB; border-radius: 6px; padding: 4px 8px;
+    cursor: pointer; font-family: 'Noto Sans KR', sans-serif; white-space: nowrap;
+  }
+  .sig-agree-check { display: flex; justify-content: center; }
+  .sig-check-label {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 600; color: var(--navy); cursor: pointer;
+  }
+  .sig-check-label input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--mint); cursor: pointer; }
+
+  /* ===== 구글시트 설정 안내 ===== */
+  .setup-notice {
+    background: #FEF3C7;
+    border: 1px solid #FCD34D;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12px;
+    color: #92400E;
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-icon">🏪</div>
+  <div>
+    <div class="header-title">서울마음편의점 성동</div>
+    <div class="header-sub">SEONGDONG · 이용자 등록</div>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-steps">
+    <div class="progress-line"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="step-item">
+      <div class="step-circle active" id="stepCircle1">1</div>
+      <div class="step-label active" id="stepLabel1">등록신청</div>
+    </div>
+    <div class="step-item">
+      <div class="step-circle" id="stepCircle2">2</div>
+      <div class="step-label" id="stepLabel2">개인정보</div>
+    </div>
+    <div class="step-item">
+      <div class="step-circle" id="stepCircle3">3</div>
+      <div class="step-label" id="stepLabel3">자가진단</div>
+    </div>
+    <div class="step-item">
+      <div class="step-circle" id="stepCircle4">4</div>
+      <div class="step-label" id="stepLabel4">QR발급</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- STEP 1: 등록신청서 -->
+<div class="section-card active" id="step1">
+  <div class="card-header">
+    <span class="card-badge">STEP 1</span>
+    <span class="card-title">등록신청서</span>
+  </div>
+  <div class="form-group">
+    <label class="form-label">성명<span class="required">*</span></label>
+    <input class="form-input" id="name" type="text" placeholder="홍길동">
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label class="form-label">생년월일<span class="required">*</span></label>
+      <input class="form-input" id="birth" type="text" placeholder="예) 19901231" maxlength="8">
+    </div>
+    <div class="form-group">
+      <label class="form-label">연락처<span class="required">*</span></label>
+      <input class="form-input" id="phone" type="tel" placeholder="010-0000-0000">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">성별<span class="required">*</span></label>
+    <div class="radio-group">
+      <div class="radio-item"><input type="radio" name="gender" id="g1" value="남성"><label for="g1">남성</label></div>
+      <div class="radio-item"><input type="radio" name="gender" id="g2" value="여성"><label for="g2">여성</label></div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">연령대<span class="required">*</span></label>
+    <div class="radio-group">
+      <div class="radio-item"><input type="radio" name="age" id="a1" value="미성년(~19세)"><label for="a1">미성년 (~19세)</label></div>
+      <div class="radio-item"><input type="radio" name="age" id="a2" value="청년(20~39세)"><label for="a2">청년 (20~39세)</label></div>
+      <div class="radio-item"><input type="radio" name="age" id="a3" value="중장년(40~64세)"><label for="a3">중장년 (40~64세)</label></div>
+      <div class="radio-item"><input type="radio" name="age" id="a4" value="어르신(65세~)"><label for="a4">어르신 (65세~)</label></div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">주소 (동)<span class="required">*</span></label>
+    <input class="form-input" id="address" type="text" placeholder="예) 행당동">
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">가구수<span class="required">*</span></label>
+    <div class="radio-group">
+      <div class="radio-item"><input type="radio" name="household" id="h1" value="1인가구"><label for="h1">1인가구</label></div>
+      <div class="radio-item"><input type="radio" name="household" id="h2" value="2인가구"><label for="h2">2인가구</label></div>
+      <div class="radio-item"><input type="radio" name="household" id="h3" value="3인가구"><label for="h3">3인가구</label></div>
+      <div class="radio-item"><input type="radio" name="household" id="h4" value="기타"><label for="h4">기타</label></div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">참여유형<span class="required">*</span></label>
+    <div class="radio-group">
+      <div class="radio-item"><input type="radio" name="visitType" id="v1" value="신규 이용자"><label for="v1">신규 이용자</label></div>
+      <div class="radio-item"><input type="radio" name="visitType" id="v2" value="기 이용자"><label for="v2">기 이용자</label></div>
+    </div>
+  </div>
+
+  <!-- 추가 조사 문항 -->
+  <div class="extra-survey">
+    <div class="extra-title">📋 추가 조사 항목</div>
+
+    <!-- 보호구분 -->
+    <div class="form-group">
+      <label class="form-label">보호구분</label>
+      <div class="checkbox-group">
+        <div class="checkbox-item"><input type="checkbox" id="pc1" name="protection" value="기초생활보장 맞춤형 급여 수급"><label for="pc1">기초생활보장 맞춤형 급여 수급</label></div>
+      </div>
+      <div class="sub-checkbox-group" style="margin-top:6px; padding-left:12px;">
+        <span class="sub-label">해당표시:</span>
+        <div class="checkbox-group" style="margin-top:4px;">
+          <div class="checkbox-item"><input type="checkbox" id="ps1" name="protection_sub" value="생계"><label for="ps1">생계</label></div>
+          <div class="checkbox-item"><input type="checkbox" id="ps2" name="protection_sub" value="의료"><label for="ps2">의료</label></div>
+          <div class="checkbox-item"><input type="checkbox" id="ps3" name="protection_sub" value="주거"><label for="ps3">주거</label></div>
+          <div class="checkbox-item"><input type="checkbox" id="ps4" name="protection_sub" value="교육"><label for="ps4">교육</label></div>
+        </div>
+      </div>
+      <div class="checkbox-group" style="margin-top:8px;">
+        <div class="checkbox-item"><input type="checkbox" id="pc2" name="protection" value="차상위계층"><label for="pc2">차상위계층</label></div>
+        <div class="checkbox-item"><input type="checkbox" id="pc3" name="protection" value="자활사업참여"><label for="pc3">자활사업참여</label></div>
+        <div class="checkbox-item"><input type="checkbox" id="pc4" name="protection" value="해당없음"><label for="pc4">해당없음</label></div>
+      </div>
+      <div style="margin-top:8px; display:flex; align-items:center; gap:8px;">
+        <div class="checkbox-item"><input type="checkbox" id="pc5" name="protection" value="기타"><label for="pc5">기타</label></div>
+        <input class="form-input" id="protectionEtc" type="text" placeholder="직접 입력" style="flex:1; font-size:13px; padding:7px 12px;">
+      </div>
+    </div>
+
+    <!-- 가족유무 -->
+    <div class="form-group">
+      <label class="form-label">가족유무</label>
+      <div class="radio-group">
+        <div class="radio-item"><input type="radio" name="family" id="fam1" value="있음"><label for="fam1">있음</label></div>
+        <div class="radio-item"><input type="radio" name="family" id="fam2" value="없음"><label for="fam2">없음</label></div>
+      </div>
+      <div id="familyDetail" style="display:none; margin-top:10px; background:var(--gray-light); border-radius:10px; padding:12px;">
+        <div class="sub-label" style="margin-bottom:8px; font-size:13px; font-weight:700; color:var(--navy);">교류 여부</div>
+        <div class="radio-group">
+          <div class="radio-item"><input type="radio" name="familyContact" id="fc1" value="주 1회 이상"><label for="fc1">주 1회 이상</label></div>
+          <div class="radio-item"><input type="radio" name="familyContact" id="fc2" value="월 1회 이상"><label for="fc2">월 1회 이상</label></div>
+          <div class="radio-item"><input type="radio" name="familyContact" id="fc3" value="월 1회 미만이나 교류 有"><label for="fc3">월 1회 미만, 교류 有</label></div>
+          <div class="radio-item"><input type="radio" name="familyContact" id="fc4" value="교류 없음"><label for="fc4">교류 없음</label></div>
+        </div>
+        <div class="sub-label" style="margin-top:8px; font-size:12px; color:var(--gray);">교류 방식</div>
+        <div class="checkbox-group" style="margin-top:4px;">
+          <div class="checkbox-item"><input type="checkbox" id="fm1" name="familyMethod" value="대면"><label for="fm1">대면</label></div>
+          <div class="checkbox-item"><input type="checkbox" id="fm2" name="familyMethod" value="비대면"><label for="fm2">비대면</label></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 경제활동 -->
+    <div class="form-group">
+      <label class="form-label">경제활동</label>
+      <div class="radio-group">
+        <div class="radio-item"><input type="radio" name="economy" id="eco1" value="직업 有"><label for="eco1">직업 有</label></div>
+        <div class="radio-item"><input type="radio" name="economy" id="eco2" value="직업 無"><label for="eco2">직업 無</label></div>
+      </div>
+      <div id="economyDetail" style="display:none; margin-top:10px; background:var(--gray-light); border-radius:10px; padding:12px;">
+        <div class="sub-label" style="margin-bottom:6px; font-size:13px; font-weight:700; color:var(--navy);">근무형태</div>
+        <div class="radio-group">
+          <div class="radio-item"><input type="radio" name="economyType" id="et1" value="상시근로"><label for="et1">상시근로</label></div>
+          <div class="radio-item"><input type="radio" name="economyType" id="et2" value="임시일용근로"><label for="et2">임시·일용근로</label></div>
+          <div class="radio-item"><input type="radio" name="economyType" id="et3" value="자영업"><label for="et3">자영업</label></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px; margin-top:8px;">
+          <div class="radio-item"><input type="radio" name="economyType" id="et4" value="기타"><label for="et4">기타</label></div>
+          <input class="form-input" id="economyEtc" type="text" placeholder="직접 입력" style="flex:1; font-size:13px; padding:7px 12px;">
+        </div>
+      </div>
+    </div>
+
+    <!-- 주거현황 -->
+    <div class="form-group">
+      <label class="form-label">주거현황</label>
+
+      <!-- 주거유형 -->
+      <div class="survey-sub-section">
+        <div class="survey-sub-label">주거유형</div>
+        <div class="radio-group" style="flex-wrap:wrap;">
+          <div class="radio-item"><input type="radio" name="housingType" id="ht1" value="아파트(일반)"><label for="ht1">아파트(일반)</label></div>
+          <div class="radio-item"><input type="radio" name="housingType" id="ht2" value="아파트(임대)"><label for="ht2">아파트(임대)</label></div>
+          <div class="radio-item"><input type="radio" name="housingType" id="ht3" value="단독주택(지상)"><label for="ht3">단독주택(지상)</label></div>
+          <div class="radio-item"><input type="radio" name="housingType" id="ht4" value="단독주택(지하)"><label for="ht4">단독주택(지하)</label></div>
+          <div class="radio-item"><input type="radio" name="housingType" id="ht5" value="단독주택(옥탑)"><label for="ht5">단독주택(옥탑)</label></div>
+          <div class="radio-item"><input type="radio" name="housingType" id="ht6" value="다세대·연립·빌라(지상)"><label for="ht6">다세대·연립·빌라(지상)</label></div>
+          <div class="radio-item"><input type="radio" name="housingType" id="ht7" value="다세대·연립·빌라(지하)"><label for="ht7">다세대·연립·빌라(지하)</label></div>
+          <div class="radio-item"><input type="radio" name="housingType" id="ht8" value="다세대·연립·빌라(옥탑)"><label for="ht8">다세대·연립·빌라(옥탑)</label></div>
+          <div class="radio-item"><input type="radio" name="housingType" id="ht9" value="다세대·연립·빌라(매입임대)"><label for="ht9">매입임대</label></div>
+          <div class="radio-item"><input type="radio" name="housingType" id="ht10" value="고시원"><label for="ht10">고시원</label></div>
+          <div class="radio-item"><input type="radio" name="housingType" id="ht11" value="쪽방"><label for="ht11">쪽방</label></div>
+          <div class="radio-item"><input type="radio" name="housingType" id="ht12" value="숙박시설(여관·모텔 등)"><label for="ht12">숙박시설</label></div>
+          <div class="radio-item"><input type="radio" name="housingType" id="ht13" value="비주거시설"><label for="ht13">비주거시설</label></div>
+        </div>
+      </div>
+
+      <!-- 보유형태 -->
+      <div class="survey-sub-section">
+        <div class="survey-sub-label">보유형태</div>
+        <div class="radio-group">
+          <div class="radio-item"><input type="radio" name="housingOwn" id="ho1" value="자가"><label for="ho1">자가</label></div>
+          <div class="radio-item"><input type="radio" name="housingOwn" id="ho2" value="전세"><label for="ho2">전세</label></div>
+          <div class="radio-item"><input type="radio" name="housingOwn" id="ho3" value="월세"><label for="ho3">월세</label></div>
+          <div class="radio-item"><input type="radio" name="housingOwn" id="ho4" value="무료임차"><label for="ho4">무료임차</label></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px; margin-top:8px;">
+          <div class="radio-item"><input type="radio" name="housingOwn" id="ho5" value="기타"><label for="ho5">기타</label></div>
+          <input class="form-input" id="housingOwnEtc" type="text" placeholder="직접 입력" style="flex:1; font-size:13px; padding:7px 12px;">
+        </div>
+      </div>
+
+      <!-- 주거환경 -->
+      <div class="survey-sub-section">
+        <div class="survey-sub-label">주거환경</div>
+        <div class="radio-group">
+          <div class="radio-item"><input type="radio" name="housingEnv" id="he1" value="양호"><label for="he1">양호</label></div>
+          <div class="radio-item"><input type="radio" name="housingEnv" id="he2" value="불량"><label for="he2">불량</label></div>
+          <div class="radio-item"><input type="radio" name="housingEnv" id="he3" value="위생불량"><label for="he3">위생불량</label></div>
+          <div class="radio-item"><input type="radio" name="housingEnv" id="he4" value="안전문제"><label for="he4">안전문제</label></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px; margin-top:8px;">
+          <div class="radio-item"><input type="radio" name="housingEnv" id="he5" value="기타"><label for="he5">기타</label></div>
+          <input class="form-input" id="housingEnvEtc" type="text" placeholder="직접 입력" style="flex:1; font-size:13px; padding:7px 12px;">
+        </div>
+      </div>
+    </div>
+
+    <!-- 건강상태 -->
+    <div class="form-group">
+      <label class="form-label">건강상태 <span style="font-size:11px; color:var(--mint-dark); font-weight:400;">(중복 응답 가능)</span></label>
+      <div class="radio-group" style="flex-wrap:wrap;">
+        <div class="radio-item"><input type="radio" name="health" id="hh1" value="양호"><label for="hh1">양호</label></div>
+      </div>
+      <div style="margin-top:8px; display:flex; flex-direction:column; gap:8px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div class="checkbox-item"><input type="checkbox" id="hh2" name="healthDetail" value="장애"><label for="hh2">장애</label></div>
+          <input class="form-input" id="healthDisability" type="text" placeholder="구분 입력" style="flex:1; font-size:13px; padding:7px 12px;">
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div class="checkbox-item"><input type="checkbox" id="hh3" name="healthDetail" value="질병"><label for="hh3">질병</label></div>
+          <input class="form-input" id="healthDisease" type="text" placeholder="종류 입력" style="flex:1; font-size:13px; padding:7px 12px;">
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div class="checkbox-item"><input type="checkbox" id="hh4" name="healthDetail" value="기타건강상황"><label for="hh4">기타건강상황</label></div>
+          <input class="form-input" id="healthEtc" type="text" placeholder="내용 입력" style="flex:1; font-size:13px; padding:7px 12px;">
+        </div>
+      </div>
+    </div>
+
+    <!-- 서비스이용의사 -->
+    <div class="form-group">
+      <label class="form-label">서비스 이용의사<span class="required">*</span></label>
+      <p style="font-size:12.5px; color:var(--gray); margin-bottom:10px; line-height:1.6;">귀하께서는 향후 돌봄 및 관계지원을 돕는 서비스를 이용하거나 참여할 의향이 있습니까?</p>
+      <div class="radio-group" style="flex-direction:column; gap:10px;">
+        <div class="radio-item"><input type="radio" name="serviceIntent" id="si1" value="예, 서비스 이용하겠습니다"><label for="si1" style="border-radius:10px;">예, 돌봄 및 관계지원 등 서비스를 이용하겠습니다.</label></div>
+        <div class="radio-item"><input type="radio" name="serviceIntent" id="si2" value="아니오, 정보안내만 받겠습니다"><label for="si2" style="border-radius:10px;">아니오, 우선 관련 정보안내만 받겠습니다.</label></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 참여시민 수칙·권리 -->
+  <div class="rights-section">
+    <div class="rights-title">📋 참여시민 수칙·권리</div>
+    <ol class="rights-list">
+      <li>서울마음편의점은 이용자 등록 신청과 서울시 외로움 및 사회적 고립 위험도 체크리스트 자가진단(12문항)을 완료한 참여시민은 식품, 특화프로그램 및 상담·서비스 연계 이용(대상군에 해당할 경우)이 가능합니다.</li>
+      <li>참여시민은 「개인정보보호법」에 따라 서울마음편의점 운영기관에 제공한 개인정보를 보호받을 권리가 있습니다.</li>
+      <li>참여시민은 서울마음편의점 이용 및 특화프로그램 참여 중 발생할 수 있는 각종 안전사고와 기물파손 예방을 위해 서울마음편의점 운영기관과 함께 노력해야 합니다.</li>
+      <li>참여시민은 서울마음편의점 이용 시 다른 참여시민과 운영·상담인력의 인권과 상호존중에 위배되는 행동, 사업 진행에 방해되는 행동을 하지 않아야 합니다. 이를 위배할 경우, 사업 참여에 제한을 받을 수 있으며, 법률 위반 행위에 대해서는 법적 조치가 진행될 수 있습니다.</li>
+      <li class="rights-etc">기타 등등 수칙 및 권리 (시설 및 운영관리 안내 부분 참고하여 작성)</li>
+    </ol>
+    <div class="rights-agree-wrap">
+      <p class="rights-agree-text">상기 본인은 서울마음편의점에 이용자 등록을 신청하며,<br>위 사항을 모두 숙지하고 준수하겠습니다.</p>
+      <div class="signature-row">
+        <span class="signature-date-label">2026. &nbsp;&nbsp;&nbsp; . &nbsp;&nbsp;&nbsp; .</span>
+        <div class="signature-box">
+          <span class="signature-label">서명</span>
+          <canvas id="sigCanvas" width="160" height="50"></canvas>
+          <button type="button" class="sig-clear-btn" onclick="clearSignature()">지우기</button>
+        </div>
+      </div>
+      <div class="sig-agree-check">
+        <label class="sig-check-label">
+          <input type="checkbox" id="rightsAgree">
+          <span>위 내용을 확인하고 동의합니다 <span class="required">*</span></span>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 2: 개인정보동의 -->
+<div class="section-card" id="step2">
+  <div class="card-header">
+    <span class="card-badge">STEP 2</span>
+    <span class="card-title">개인정보 수집·활용 동의</span>
+  </div>
+
+  <!-- 일반정보 -->
+  <div class="consent-section">
+    <div class="consent-title">
+      일반정보 수집
+      <span class="consent-tag tag-required">필수</span>
+    </div>
+    <div class="consent-content">
+      수집항목: [필수] 성명, 생년월일, 연락처 / [선택] 참여시민 정보<br>
+      수집목적: 사회복지사업의 신청 및 조사, 서비스 제공의 실시 여부 및 유형결정, 통계 관리<br>
+      보유기간: 사무처리 종료 후 5년
+    </div>
+    <div class="consent-agree">
+      <button class="consent-btn agree-yes" data-section="info" data-val="동의" onclick="setConsent(this)">✓ 동의</button>
+      <button class="consent-btn agree-no" data-section="info" data-val="미동의" onclick="setConsent(this)">✗ 미동의</button>
+    </div>
+  </div>
+
+  <!-- 민감정보 -->
+  <div class="consent-section">
+    <div class="consent-title">
+      민감정보 수집
+      <span class="consent-tag tag-optional">선택</span>
+    </div>
+    <div class="consent-content">
+      수집항목: 경제 활동 및 상황, 생활실태, 가족정보, 건강상태, 장애, 사회심리적 상황, 지역단위 고립가구 전달가구 및 서울마음편의점 이용 관련 조사·응답내용 등<br>
+      수집목적: 사회복지사업의 신청 및 조사, 서비스 제공의 실시 여부 및 유형 결정, 통계 관리
+    </div>
+    <div class="consent-agree">
+      <button class="consent-btn agree-yes" data-section="sensitive" data-val="동의" onclick="setConsent(this)">✓ 동의</button>
+      <button class="consent-btn agree-no" data-section="sensitive" data-val="미동의" onclick="setConsent(this)">✗ 미동의</button>
+    </div>
+  </div>
+
+  <!-- 홍보 -->
+  <div class="consent-section">
+    <div class="consent-title">
+      홍보 활용 (사진·영상)
+      <span class="consent-tag tag-optional">선택</span>
+    </div>
+    <div class="consent-content">
+      수집항목: 사업 참여 사진 및 영상 (촬영 시 동의를 구하고 촬영)<br>
+      수집목적: 사회복지사업의 안내 및 홍보 (비상업적인 용도로만 사용)<br>
+      보유기간: 사무처리 종료 후 5년
+    </div>
+    <div class="consent-agree">
+      <button class="consent-btn agree-yes" data-section="promo" data-val="동의" onclick="setConsent(this)">✓ 동의</button>
+      <button class="consent-btn agree-no" data-section="promo" data-val="미동의" onclick="setConsent(this)">✗ 미동의</button>
+    </div>
+  </div>
+
+  <!-- 제3자 제공 -->
+  <div class="consent-section">
+    <div class="consent-title">
+      제3자 제공
+      <span class="consent-tag tag-optional">선택</span>
+    </div>
+    <div class="consent-content">
+      제공기관: 서울시청, OO구청, 서울시복지재단(고립예방센터), 사회복지법인 단체 및 시설(복지관 등), 사회복지사업 수행기관('외로움없는서울' 사업 수행 등)<br>
+      제공목적: 사회복지 서비스 제공 및 진행에 관련된 개인정보 조사, 응답 데이터 처리<br>
+      보유기간: 사무처리 종료 후 5년
+    </div>
+    <div class="consent-agree">
+      <button class="consent-btn agree-yes" data-section="third" data-val="동의" onclick="setConsent(this)">✓ 동의</button>
+      <button class="consent-btn agree-no" data-section="third" data-val="미동의" onclick="setConsent(this)">✗ 미동의</button>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 3: 자가진단 -->
+<div class="section-card" id="step3">
+  <div class="card-header">
+    <span class="card-badge">STEP 3</span>
+    <span class="card-title">자가진단 체크리스트</span>
+  </div>
+  <div class="diagnosis-intro">
+    귀하는 아래의 상황에 대해 어떻게 경험하고 계신지 <strong>지난 4주간(한달)</strong>을 기준으로 해당하는 항목을 선택해주세요.
+  </div>
+
+  <!-- 관계단절 상황 -->
+  <div class="diagnosis-section-title">
+    관계단절 상황 (5문항) <span class="diagnosis-section-sub">— 외로움 및 사회적 고립 관련</span>
+  </div>
+
+  <div class="question-item">
+    <div class="question-text"><span class="question-num">1</span>나는 같이 있어 줄 사람이 부족하다고 자주 느낀다.</div>
+    <div class="answer-options">
+      <div class="answer-option"><input type="radio" name="q1" id="q1a" value="1"><label for="q1a">1점 — 거의 없다</label></div>
+      <div class="answer-option"><input type="radio" name="q1" id="q1b" value="2"><label for="q1b">2점 — 조금 그렇다</label></div>
+      <div class="answer-option"><input type="radio" name="q1" id="q1c" value="3"><label for="q1c">3점 — 자주 그렇다</label></div>
+    </div>
+  </div>
+
+  <div class="question-item">
+    <div class="question-text"><span class="question-num">2</span>나는 혼자 남겨진 것 같다고 자주 느낀다.</div>
+    <div class="answer-options">
+      <div class="answer-option"><input type="radio" name="q2" id="q2a" value="1"><label for="q2a">1점 — 거의 없다</label></div>
+      <div class="answer-option"><input type="radio" name="q2" id="q2b" value="2"><label for="q2b">2점 — 조금 그렇다</label></div>
+      <div class="answer-option"><input type="radio" name="q2" id="q2c" value="3"><label for="q2c">3점 — 자주 그렇다</label></div>
+    </div>
+  </div>
+
+  <div class="question-item">
+    <div class="question-text"><span class="question-num">3</span>나는 사람들 사이에서 고립되어 있다고 자주 느낀다.</div>
+    <div class="answer-options">
+      <div class="answer-option"><input type="radio" name="q3" id="q3a" value="1"><label for="q3a">1점 — 거의 없다</label></div>
+      <div class="answer-option"><input type="radio" name="q3" id="q3b" value="2"><label for="q3b">2점 — 조금 그렇다</label></div>
+      <div class="answer-option"><input type="radio" name="q3" id="q3c" value="3"><label for="q3c">3점 — 자주 그렇다</label></div>
+    </div>
+  </div>
+
+  <div class="diagnosis-section-title" style="background: #4A6FA5;">
+    사회적 고립 관련 (2문항) <span class="diagnosis-section-sub">— 도움을 줄 사람 관련</span>
+  </div>
+
+  <div class="question-item">
+    <div class="question-text"><span class="question-num">4</span>나는 몸이 아파서 도움이 필요할 때 도움을 줄 사람이 있다.</div>
+    <div class="answer-options">
+      <div class="answer-option"><input type="radio" name="q4" id="q4a" value="0"><label for="q4a">0점 — 있다</label></div>
+      <div class="answer-option"><input type="radio" name="q4" id="q4b" value="1"><label for="q4b">1점 — 없다</label></div>
+    </div>
+  </div>
+
+  <div class="question-item">
+    <div class="question-text"><span class="question-num">5</span>나는 낙심하거나 우울해서 이야기상대가 필요할 때 들어줄 사람이 있다.</div>
+    <div class="answer-options">
+      <div class="answer-option"><input type="radio" name="q5" id="q5a" value="0"><label for="q5a">0점 — 있다</label></div>
+      <div class="answer-option"><input type="radio" name="q5" id="q5b" value="1"><label for="q5b">1점 — 없다</label></div>
+    </div>
+  </div>
+
+  <!-- 일상생활관리 -->
+  <div class="diagnosis-section-title" style="background: #6B7280;">
+    일상생활관리 상황 (7문항) <span class="diagnosis-section-sub">— 일상생활 유지 관련</span>
+  </div>
+
+  <div class="question-item">
+    <div class="question-text"><span class="question-num">6</span>(위생관리) 개인위생과 집안 청소 등 관리가 되고 있다.</div>
+    <div class="answer-options">
+      <div class="answer-option"><input type="radio" name="q6" id="q6a" value="0"><label for="q6a">아니다</label></div>
+      <div class="answer-option"><input type="radio" name="q6" id="q6b" value="1"><label for="q6b">그렇다</label></div>
+    </div>
+  </div>
+
+  <div class="question-item">
+    <div class="question-text"><span class="question-num">7</span>(식사관리) 끼니를 거르거나 폭식하지 않고 꾸준히 식사관리를 한다.</div>
+    <div class="answer-options">
+      <div class="answer-option"><input type="radio" name="q7" id="q7a" value="0"><label for="q7a">아니다</label></div>
+      <div class="answer-option"><input type="radio" name="q7" id="q7b" value="1"><label for="q7b">그렇다</label></div>
+    </div>
+  </div>
+
+  <div class="question-item">
+    <div class="question-text"><span class="question-num">8</span>(재정관리) 생활비, 용돈과 공과금 납부를 잘 관리한다.</div>
+    <div class="answer-options">
+      <div class="answer-option"><input type="radio" name="q8" id="q8a" value="0"><label for="q8a">아니다</label></div>
+      <div class="answer-option"><input type="radio" name="q8" id="q8b" value="1"><label for="q8b">그렇다</label></div>
+    </div>
+  </div>
+
+  <div class="question-item">
+    <div class="question-text"><span class="question-num">9</span>(건강관리) 신체·정신적으로 건강에 문제가 있을 때 병원을 가고 약도 잘 챙겨 먹는다.</div>
+    <div class="answer-options">
+      <div class="answer-option"><input type="radio" name="q9" id="q9a" value="0"><label for="q9a">아니다</label></div>
+      <div class="answer-option"><input type="radio" name="q9" id="q9b" value="1"><label for="q9b">그렇다</label></div>
+    </div>
+  </div>
+
+  <div class="question-item">
+    <div class="question-text"><span class="question-num">10</span>(외출/은둔) 혼자 필요한 활동을 하거나 누군가를 만나기 위해 외출한다.</div>
+    <div class="answer-options">
+      <div class="answer-option"><input type="radio" name="q10" id="q10a" value="0"><label for="q10a">아니다</label></div>
+      <div class="answer-option"><input type="radio" name="q10" id="q10b" value="1"><label for="q10b">그렇다</label></div>
+    </div>
+  </div>
+
+  <div class="question-item">
+    <div class="question-text"><span class="question-num">11</span>(대인관계) 다른 사람과 직접 만나서 대화하거나 교류한다.</div>
+    <div class="answer-options">
+      <div class="answer-option"><input type="radio" name="q11" id="q11a" value="0"><label for="q11a">아니다</label></div>
+      <div class="answer-option"><input type="radio" name="q11" id="q11b" value="1"><label for="q11b">그렇다</label></div>
+    </div>
+  </div>
+
+  <div class="question-item">
+    <div class="question-text"><span class="question-num">12</span>(생활패턴) 일상생활이 수면 패턴이 규칙적이다.</div>
+    <div class="answer-options">
+      <div class="answer-option"><input type="radio" name="q12" id="q12a" value="0"><label for="q12a">아니다</label></div>
+      <div class="answer-option"><input type="radio" name="q12" id="q12b" value="1"><label for="q12b">그렇다</label></div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 4: QR 발급 -->
+<div class="section-card" id="step4">
+  <div class="card-header">
+    <span class="card-badge">STEP 4</span>
+    <span class="card-title">등록 완료 · QR 발급</span>
+  </div>
+  <div class="qr-wrap">
+    <div class="qr-member-label">회원번호</div>
+    <div class="qr-member-id" id="displayMemberId">-</div>
+    <div id="qrcode"></div>
+    <div class="qr-name" id="displayName">-</div>
+    <div class="score-summary" id="scoreSummary"></div>
+    <div class="qr-note">
+      📌 이 QR코드를 저장하거나 캡처해 두세요.<br>
+      재방문 시 직원에게 QR코드를 보여주시면 빠르게 체크인됩니다.
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<!-- BOTTOM BUTTON -->
+<div class="bottom-btn-wrap">
+  <button class="btn-primary" id="nextBtn" onclick="goNext()">다음으로</button>
+  <button class="btn-secondary" id="prevBtn" onclick="goPrev()" style="display:none">← 이전으로</button>
+</div>
+
+<!-- 직원 스캔 버튼 -->
+<button class="staff-btn" onclick="openStaffModal()">🔍 직원용 스캔</button>
+
+<!-- 직원 스캔 모달 -->
+<div class="modal-overlay" id="staffModal">
+  <div class="modal-box">
+    <div class="modal-title">🔍 방문 확인</div>
+    <div class="modal-sub">QR코드를 스캔하거나 회원번호를 입력하세요</div>
+    <div class="scan-input-wrap">
+      <input class="scan-input" id="scanInput" type="text" placeholder="회원번호 입력" maxlength="20">
+      <button class="scan-submit-btn" onclick="processScan()">확인</button>
+    </div>
+    <div id="scanError" class="error-msg">등록되지 않은 회원번호입니다.</div>
+    <div class="scan-result" id="scanResult">
+      <div class="scan-result-name" id="scanName"></div>
+      <div class="scan-result-info" id="scanInfo"></div>
+      <div class="visit-count" id="visitCount"></div>
+    </div>
+    <button class="modal-close-btn" onclick="closeStaffModal()">닫기</button>
+  </div>
+</div>
+
+<script>
+// ===== 상태 관리 =====
+let currentStep = 1;
+let userData = {};
+let consentData = { info: null, sensitive: null, promo: null, third: null };
+
+// ===== 구글 시트 설정 (실제 사용 시 교체 필요) =====
+const SHEET_CONFIG = {
+  // Google Apps Script Web App URL로 교체하세요
+  scriptUrl: 'https://script.google.com/macros/s/AKfycbxnw3B2PNUCZxjx4ka8Dg0l1BIM5rv0tlG4aCZ7I8gwfXbcJtnEd2l2nsJ_g4AoGEWcKg/exec',
+  configured: true
+};
+
+// ===== 로컬 스토리지 기반 임시 DB (데모용) =====
+function getDB() {
+  try { return JSON.parse(localStorage.getItem('maeumDB') || '{}'); } catch { return {}; }
+}
+function saveDB(db) {
+  localStorage.setItem('maeumDB', JSON.stringify(db));
+}
+
+// ===== 양호 라디오 토글 (재클릭 시 취소) =====
+document.getElementById('hh1').addEventListener('click', function() {
+  if (this.dataset.checked === 'true') {
+    this.checked = false;
+    this.dataset.checked = 'false';
+  } else {
+    this.dataset.checked = 'true';
+  }
+});
+
+// ===== 추가 조사 토글 =====
+document.querySelectorAll('input[name="family"]').forEach(r => {
+  r.addEventListener('change', () => {
+    document.getElementById('familyDetail').style.display = r.value === '있음' ? 'block' : 'none';
+  });
+});
+document.querySelectorAll('input[name="economy"]').forEach(r => {
+  r.addEventListener('change', () => {
+    document.getElementById('economyDetail').style.display = r.value === '직업 有' ? 'block' : 'none';
+  });
+});
+
+// ===== 서명 패드 =====
+const sigCanvas = document.getElementById('sigCanvas');
+const sigCtx = sigCanvas.getContext('2d');
+let isSigning = false;
+sigCtx.strokeStyle = '#1A2B4A';
+sigCtx.lineWidth = 2;
+sigCtx.lineCap = 'round';
+
+sigCanvas.addEventListener('mousedown', e => { isSigning = true; sigCtx.beginPath(); sigCtx.moveTo(getPos(e).x, getPos(e).y); });
+sigCanvas.addEventListener('mousemove', e => { if (!isSigning) return; sigCtx.lineTo(getPos(e).x, getPos(e).y); sigCtx.stroke(); });
+sigCanvas.addEventListener('mouseup', () => isSigning = false);
+sigCanvas.addEventListener('mouseleave', () => isSigning = false);
+sigCanvas.addEventListener('touchstart', e => { e.preventDefault(); isSigning = true; sigCtx.beginPath(); sigCtx.moveTo(getPos(e.touches[0]).x, getPos(e.touches[0]).y); });
+sigCanvas.addEventListener('touchmove', e => { e.preventDefault(); if (!isSigning) return; sigCtx.lineTo(getPos(e.touches[0]).x, getPos(e.touches[0]).y); sigCtx.stroke(); });
+sigCanvas.addEventListener('touchend', () => isSigning = false);
+
+function getPos(e) {
+  const rect = sigCanvas.getBoundingClientRect();
+  return { x: (e.clientX || e.pageX) - rect.left, y: (e.clientY || e.pageY) - rect.top };
+}
+function clearSignature() { sigCtx.clearRect(0, 0, sigCanvas.width, sigCanvas.height); }
+function isSignatureEmpty() {
+  const data = sigCtx.getImageData(0, 0, sigCanvas.width, sigCanvas.height).data;
+  return !data.some(v => v !== 0);
+}
+
+// ===== 진행 상태 업데이트 =====
+function updateProgress(step) {
+  const fills = [0, 0, 33, 66, 100];
+  document.getElementById('progressFill').style.width = fills[step] + '%';
+  for (let i = 1; i <= 4; i++) {
+    const circle = document.getElementById('stepCircle' + i);
+    const label = document.getElementById('stepLabel' + i);
+    circle.className = 'step-circle';
+    label.className = 'step-label';
+    if (i < step) { circle.classList.add('done'); circle.textContent = '✓'; label.classList.add('done'); }
+    else if (i === step) { circle.classList.add('active'); circle.textContent = i; label.classList.add('active'); }
+    else { circle.textContent = i; }
+  }
+}
+
+// ===== 동의 버튼 =====
+function setConsent(btn) {
+  const section = btn.dataset.section;
+  const val = btn.dataset.val;
+  consentData[section] = val;
+  const parent = btn.closest('.consent-agree');
+  parent.querySelectorAll('.consent-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+// ===== 유효성 검사 =====
+function validateStep1() {
+  const fields = [
+    { id: 'name', label: '성명' },
+    { id: 'birth', label: '생년월일' },
+    { id: 'phone', label: '연락처' }
+  ];
+  for (const f of fields) {
+    if (!document.getElementById(f.id).value.trim()) {
+      alert(f.label + '을(를) 입력해주세요.');
+      document.getElementById(f.id).focus();
+      return false;
+    }
+  }
+  const checks = [
+    { name: 'gender', label: '성별' },
+    { name: 'age', label: '연령대' },
+    { name: 'household', label: '가구수' },
+    { name: 'visitType', label: '참여유형' }
+  ];
+  for (const c of checks) {
+    if (!document.querySelector(`input[name="${c.name}"]:checked`)) {
+      alert(c.label + '을(를) 선택해주세요.');
+      return false;
+    }
+  }
+  if (!document.getElementById('address').value.trim()) {
+    alert('주소(동)을 입력해주세요.');
+    return false;
+  }
+  if (!document.getElementById('rightsAgree').checked) {
+    alert('참여시민 수칙·권리 동의를 확인해주세요.');
+    return false;
+  }
+  return true;
+}
+
+function validateStep2() {
+  if (!consentData.info) {
+    alert('일반정보 수집 동의 여부를 선택해주세요. (필수)');
+    return false;
+  }
+  if (consentData.info === '미동의') {
+    alert('일반정보 수집은 필수 동의 항목입니다.');
+    return false;
+  }
+  if (!consentData.sensitive || !consentData.promo || !consentData.third) {
+    alert('모든 동의 항목을 선택해주세요.');
+    return false;
+  }
+  return true;
+}
+
+function validateStep3() {
+  for (let i = 1; i <= 12; i++) {
+    if (!document.querySelector(`input[name="q${i}"]:checked`)) {
+      alert(`${i}번 문항에 답변해주세요.`);
+      return false;
+    }
+  }
+  return true;
+}
+
+// ===== 점수 계산 =====
+function calcScores() {
+  let loneliness = 0, isolation = 0, daily = 0;
+  for (let i = 1; i <= 3; i++) {
+    loneliness += parseInt(document.querySelector(`input[name="q${i}"]:checked`).value);
+  }
+  for (let i = 4; i <= 5; i++) {
+    isolation += parseInt(document.querySelector(`input[name="q${i}"]:checked`).value);
+  }
+  let dailyNotOk = 0;
+  for (let i = 6; i <= 12; i++) {
+    if (document.querySelector(`input[name="q${i}"]:checked`).value === '0') dailyNotOk++;
+  }
+
+  const lonelyAlert = loneliness >= 6;
+  const isolationAlert = isolation >= 1;
+  const dailyAlert = dailyNotOk >= 2;
+
+  return { loneliness, isolation, dailyNotOk, lonelyAlert, isolationAlert, dailyAlert };
+}
+
+// ===== 고유번호 생성 =====
+function generateMemberId() {
+  const now = new Date();
+  const yy = String(now.getFullYear()).slice(2);
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const dd = String(now.getDate()).padStart(2, '0');
+  const rand = String(Math.floor(Math.random() * 9000) + 1000);
+  return `SD${yy}${mm}${dd}${rand}`;
+}
+
+// ===== QR 생성 =====
+function generateQR(memberId) {
+  document.getElementById('qrcode').innerHTML = '';
+  new QRCode(document.getElementById('qrcode'), {
+    text: memberId,
+    width: 180,
+    height: 180,
+    colorDark: '#1A2B4A',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.H
+  });
+}
+
+// ===== 데이터 수집 =====
+function collectData() {
+  const scores = calcScores();
+  const memberId = generateMemberId();
+
+  userData = {
+    memberId,
+    name: document.getElementById('name').value.trim(),
+    birth: document.getElementById('birth').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    gender: document.querySelector('input[name="gender"]:checked').value,
+    age: document.querySelector('input[name="age"]:checked').value,
+    address: document.getElementById('address').value.trim(),
+    household: document.querySelector('input[name="household"]:checked').value,
+    visitType: document.querySelector('input[name="visitType"]:checked').value,
+    consent_info: consentData.info,
+    consent_sensitive: consentData.sensitive,
+    consent_promo: consentData.promo,
+    consent_third: consentData.third,
+    score_loneliness: scores.loneliness,
+    score_isolation: scores.isolation,
+    score_daily_notok: scores.dailyNotOk,
+    alert_lonely: scores.lonelyAlert ? '도움필요' : '양호',
+    alert_isolation: scores.isolationAlert ? '도움필요' : '양호',
+    alert_daily: scores.dailyAlert ? '도움필요' : '양호',
+    registeredAt: new Date().toLocaleString('ko-KR'),
+    visitCount: 1
+  };
+
+  return { userData, scores };
+}
+
+// ===== 구글 시트 전송 =====
+async function sendToSheet(data, type) {
+  if (!SHEET_CONFIG.configured || SHEET_CONFIG.scriptUrl === 'YOUR_GOOGLE_APPS_SCRIPT_URL') {
+    console.log('[Demo] 구글 시트 전송 데이터:', data);
+    return { success: true, demo: true };
+  }
+  try {
+    const res = await fetch(SHEET_CONFIG.scriptUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, ...data })
+    });
+    return await res.json();
+  } catch (e) {
+    console.error('시트 전송 오류:', e);
+    return { success: false };
+  }
+}
+
+// ===== 최종 등록 처리 =====
+async function finalizeRegistration() {
+  const { userData: data, scores } = collectData();
+
+  // 로컬 DB 저장 (데모용)
+  const db = getDB();
+  db[data.memberId] = data;
+  saveDB(db);
+
+  // 구글 시트 전송
+  await sendToSheet(data, 'register');
+
+  // QR 표시
+  document.getElementById('displayMemberId').textContent = data.memberId;
+  document.getElementById('displayName').textContent = data.name + ' 님';
+  generateQR(data.memberId);
+
+  // 점수 요약
+  const summary = document.getElementById('scoreSummary');
+  summary.innerHTML = `
+    <div class="score-row">
+      <span class="score-label">외로움 점수</span>
+      <span>${data.score_loneliness}점 <span class="alert-badge ${scores.lonelyAlert ? 'alert-high' : 'alert-low'}">${data.alert_lonely}</span></span>
+    </div>
+    <div class="score-row">
+      <span class="score-label">사회적 고립</span>
+      <span>${data.score_isolation}점 <span class="alert-badge ${scores.isolationAlert ? 'alert-high' : 'alert-low'}">${data.alert_isolation}</span></span>
+    </div>
+    <div class="score-row">
+      <span class="score-label">일상생활 관리</span>
+      <span>미흡 ${data.score_daily_notok}항목 <span class="alert-badge ${scores.dailyAlert ? 'alert-mid' : 'alert-low'}">${data.alert_daily}</span></span>
+    </div>
+  `;
+}
+
+// ===== 다음/이전 =====
+async function goNext() {
+  if (currentStep === 1 && !validateStep1()) return;
+  if (currentStep === 2 && !validateStep2()) return;
+  if (currentStep === 3 && !validateStep3()) return;
+
+  if (currentStep === 3) {
+    document.getElementById('nextBtn').disabled = true;
+    document.getElementById('nextBtn').textContent = '등록 처리 중...';
+    await finalizeRegistration();
+    document.getElementById('nextBtn').textContent = '완료';
+    document.getElementById('nextBtn').disabled = false;
+  }
+
+  if (currentStep < 4) {
+    document.getElementById('step' + currentStep).classList.remove('active');
+    currentStep++;
+    document.getElementById('step' + currentStep).classList.add('active');
+    updateProgress(currentStep);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  document.getElementById('prevBtn').style.display = currentStep > 1 ? 'block' : 'none';
+
+  if (currentStep === 4) {
+    document.getElementById('nextBtn').style.display = 'none';
+    document.getElementById('prevBtn').style.display = 'none';
+  } else {
+    document.getElementById('nextBtn').textContent = currentStep === 3 ? '등록 완료 및 QR 발급' : '다음으로';
+  }
+}
+
+function goPrev() {
+  if (currentStep > 1) {
+    document.getElementById('step' + currentStep).classList.remove('active');
+    currentStep--;
+    document.getElementById('step' + currentStep).classList.add('active');
+    updateProgress(currentStep);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  document.getElementById('prevBtn').style.display = currentStep > 1 ? 'block' : 'none';
+  document.getElementById('nextBtn').style.display = 'block';
+  document.getElementById('nextBtn').textContent = currentStep === 3 ? '등록 완료 및 QR 발급' : '다음으로';
+}
+
+// ===== 직원 스캔 =====
+function openStaffModal() {
+  document.getElementById('staffModal').classList.add('open');
+  document.getElementById('scanInput').value = '';
+  document.getElementById('scanResult').classList.remove('show');
+  document.getElementById('scanError').style.display = 'none';
+  setTimeout(() => document.getElementById('scanInput').focus(), 300);
+}
+
+function closeStaffModal() {
+  document.getElementById('staffModal').classList.remove('open');
+}
+
+async function processScan() {
+  const id = document.getElementById('scanInput').value.trim().toUpperCase();
+  if (!id) return;
+
+  const db = getDB();
+  const member = db[id];
+
+  document.getElementById('scanError').style.display = 'none';
+  document.getElementById('scanResult').classList.remove('show');
+
+  if (!member) {
+    document.getElementById('scanError').style.display = 'block';
+    return;
+  }
+
+  // 방문 횟수 업데이트
+  member.visitCount = (member.visitCount || 1) + 1;
+  member.lastVisit = new Date().toLocaleString('ko-KR');
+  db[id] = member;
+  saveDB(db);
+
+  // 구글 시트에 방문 기록 전송
+  await sendToSheet({
+    memberId: member.memberId,
+    name: member.name,
+    visitCount: member.visitCount,
+    visitAt: member.lastVisit,
+    alert_lonely: member.alert_lonely,
+    alert_isolation: member.alert_isolation,
+    alert_daily: member.alert_daily
+  }, 'visit');
+
+  document.getElementById('scanName').textContent = member.name + ' 님';
+  document.getElementById('scanInfo').innerHTML = `
+    연령대: ${member.age} · ${member.gender}<br>
+    주소: 성동구 ${member.address}<br>
+    가구형태: ${member.household}<br>
+    최초 등록: ${member.registeredAt}
+  `;
+  document.getElementById('visitCount').innerHTML = `🏪 ${member.visitCount}번째 방문`;
+  document.getElementById('scanResult').classList.add('show');
+}
+
+// ===== QR 스캐너 입력 자동 처리 (USB/블루투스 스캐너) =====
+document.getElementById('scanInput').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') processScan();
+});
+
+// ===== 초기화 =====
+updateProgress(1);
+</script>
+</body>
+</html>
